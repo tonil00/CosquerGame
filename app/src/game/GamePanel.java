@@ -1,13 +1,10 @@
 package game;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -16,8 +13,6 @@ import javax.swing.Timer;
  */
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
-    private static final Color DARK_BLUE = new Color(0, 0, 139);  
-    private static final Color DARKER_BLUE = new Color(0, 0, 100);
     private static final Color HUD_COLOR = Color.BLACK; // Black color for the HUD bar
     private static final Color PAUSE_OVERLAY_COLOR = new Color(255, 0, 0, 50); // 20% Red overlay when paused
     
@@ -43,12 +38,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     }
 
     private void initializeMapTiles() {
-        MapTile entranceTile = new MapTile(DARK_BLUE);
+        MapTile entranceTile = new MapTile(new Color(0, 100, 255)); // Lighter mid-blue
         entranceTile.addEnemy(new CrabEnemy(300, 200)); 
         entranceTile.addObstacle(new Obstacle(200, 150, 100, 50)); 
         entranceTile.addCurrent(new WaterCurrent(100, 100, 1, 0)); 
 
-        MapTile deepTile = new MapTile(DARKER_BLUE);
+        MapTile deepTile = new MapTile(new Color(0, 0, 139)); // Darker blue
         deepTile.addEnemy(new LargeFishEnemy(400, 300));
         deepTile.addPainting(new Painting(500, 100));
 
@@ -104,8 +99,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         mapManager.drawCurrentTile(g); 
         player.draw(g); 
 
-        // HUD is drawn independently of camera movement
+        // Translate back to prevent the HUD from moving with the camera
+        g.translate(camera.getX(), camera.getY());
+
+        // Draw the static HUD that stays at the top of the screen
         drawHUD(g);
+
+        // Draw the gradient overlay effect (water depth)
+        drawWaterDepthOverlay(g);
 
         // If the game is paused, overlay the screen with a 20% red tint
         if (gamePaused) {
@@ -151,6 +152,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         // Draw the red overlay when the game is paused
         g.setColor(PAUSE_OVERLAY_COLOR);
         g.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+    private void drawWaterDepthOverlay(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
+        float radius = (float) Math.max(getWidth(), getHeight()) / 2.0f;
+        Point2D center = new Point2D.Float(centerX, centerY);
+
+        // Create a radial gradient from lighter mid blue to very dark blue
+        Color[] colors = { new Color(173, 216, 230, 0), new Color(0, 0, 139, 200), new Color(0, 0, 50, 255) };
+        float[] fractions = { 0.5f, 0.8f, 1.0f };
+
+        RadialGradientPaint gradient = new RadialGradientPaint(center, radius, fractions, colors);
+        g2d.setPaint(gradient);
+        g2d.fillRect(0, hudHeight, getWidth(), getHeight() - hudHeight); // Apply gradient starting from below the HUD
     }
 
     public void increasePoints() {
