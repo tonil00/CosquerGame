@@ -22,8 +22,8 @@ public class Painting {
 
     public void draw(Graphics g) {
         if (!collected) {
-            g.setColor(Color.YELLOW); // Bright yellow to stand out
-            g.fillRect(x, y, width, height); // Draw the painting
+            g.setColor(Color.YELLOW);
+            g.fillRect(x, y, width, height); // Draw collectible painting as a yellow square
         }
     }
 

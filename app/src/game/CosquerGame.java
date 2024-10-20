@@ -8,16 +8,15 @@ import javax.swing.JFrame;
 public class CosquerGame {
 
     public static void main(String[] args) {
-        JFrame window = new JFrame("Cosquer Cave Explorer");
-        GamePanel gamePanel = new GamePanel(); // Create the GamePanel
+        JFrame frame = new JFrame("Cosquer Cave Explorer");
+        GamePanel gamePanel = new GamePanel();
 
-        window.add(gamePanel);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.pack();
-        window.setSize(800, 600);
-        window.setVisible(true);
+        frame.add(gamePanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setResizable(false);
+        frame.setVisible(true);
 
-        gamePanel.startGame(); // Start the game
+        gamePanel.startGame(); // Start the game loop
     }
 }

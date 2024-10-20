@@ -19,8 +19,8 @@ public class Obstacle {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.DARK_GRAY); // Draw the obstacle as dark gray
-        g.fillRect(x, y, width, height); // Draw the obstacle
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(x, y, width, height); // Draw obstacle as a dark gray rectangle
     }
 
     public Rectangle getHitbox() {

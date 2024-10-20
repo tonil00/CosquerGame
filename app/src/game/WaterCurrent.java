@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * WaterCurrent represents the currents that push the player in the game.
+ * WaterCurrent represents a water current that pushes the player in a certain direction.
  */
 public class WaterCurrent {
 
@@ -15,15 +15,19 @@ public class WaterCurrent {
     public WaterCurrent(int x, int y, int pushX, int pushY) {
         this.x = x;
         this.y = y;
-        this.width = 100;
-        this.height = 20;
+        this.width = 50;
+        this.height = 50;
         this.pushX = pushX;
         this.pushY = pushY;
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.CYAN); // Draw the current in cyan
-        g.fillRect(x, y, width, height); // Draw the water current
+        g.setColor(Color.CYAN);
+        g.fillRect(x, y, width, height); // Draw water current as a cyan rectangle
+    }
+
+    public Rectangle getHitbox() {
+        return new Rectangle(x, y, width, height);
     }
 
     public int getPushX() {
@@ -32,9 +36,5 @@ public class WaterCurrent {
 
     public int getPushY() {
         return pushY;
-    }
-
-    public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
     }
 }

@@ -20,6 +20,8 @@ public class Player {
     private final double deceleration = 0.1;
     private final double maxSpeed = 3.0;
     private int health;
+    private boolean isAlive;
+    private final int hudHeight = 50; // Height of the HUD to restrict movement
 
     public Player(int startX, int startY) {
         this.x = startX;
@@ -29,6 +31,7 @@ public class Player {
         this.speedX = 0;
         this.speedY = 0;
         this.health = 3;
+        this.isAlive = true;
     }
 
     public void draw(Graphics g) {
@@ -37,7 +40,45 @@ public class Player {
     }
 
     public void update(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight,
-                       List<Obstacle> obstacles, List<WaterCurrent> currents, List<Enemy> enemies, List<Painting> paintings) {
+                       List<Obstacle> obstacles, List<WaterCurrent> currents, List<Enemy> enemies, 
+                       List<Painting> paintings, GamePanel gamePanel) {
+        if (!isAlive) return;
+
+        handleMovement(movingUp, movingDown, movingLeft, movingRight);
+        handleCollisions(obstacles, enemies, paintings, gamePanel);
+
+        // Apply currents if intersecting
+        for (WaterCurrent current : currents) {
+            if (getHitbox().intersects(current.getHitbox())) {
+                x += current.getPushX();
+                y += current.getPushY();
+            }
+        }
+
+        // Update the player's position based on speed
+        x += speedX;
+        y += speedY;
+
+        // Bound player within map limits and below the HUD
+        if (x < 0) {
+            x = 0;
+            speedX = -speedX * 0.5; // Bounce off left wall (reduced momentum)
+        }
+        if (y < hudHeight) {
+            y = hudHeight; // Prevent player from going into the HUD
+            speedY = -speedY * 0.5; // Bounce off top (reduced momentum)
+        }
+        if (x > 800 - width) {
+            x = 800 - width;
+            speedX = -speedX * 0.5; // Bounce off right wall (reduced momentum)
+        }
+        if (y > 600 - height) {
+            y = 600 - height;
+            speedY = -speedY * 0.5; // Bounce off bottom wall (reduced momentum)
+        }
+    }
+
+    private void handleMovement(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight) {
         if (movingLeft) {
             speedX = Math.max(speedX - acceleration, -maxSpeed);
         } else if (movingRight) {
@@ -53,61 +94,75 @@ public class Player {
         } else {
             speedY = (speedY > 0) ? Math.max(speedY - deceleration, 0) : Math.min(speedY + deceleration, 0);
         }
-
-        int nextX = x + (int) speedX;
-        int nextY = y + (int) speedY;
-
-        // Check for collisions with obstacles
-        if (!isColliding(nextX, nextY, obstacles)) {
-            x = nextX;
-            y = nextY;
-        }
-
-        applyCurrentEffect(currents);
-        handleEnemiesAndPaintings(enemies, paintings);
     }
 
-    private boolean isColliding(int nextX, int nextY, List<Obstacle> obstacles) {
-        Rectangle hitbox = new Rectangle(nextX, nextY, width, height);
+    private void handleCollisions(List<Obstacle> obstacles, List<Enemy> enemies, List<Painting> paintings, GamePanel gamePanel) {
+        Rectangle playerHitbox = getHitbox();
+
         for (Obstacle obstacle : obstacles) {
-            if (hitbox.intersects(obstacle.getHitbox())) {
-                return true;
+            if (playerHitbox.intersects(obstacle.getHitbox())) {
+                // Calculate sliding bounce effect when hitting a wall or stone
+                handleSlideOffWall(obstacle.getHitbox());
             }
         }
-        return false;
-    }
 
-    private void applyCurrentEffect(List<WaterCurrent> currents) {
-        Rectangle hitbox = new Rectangle(x, y, width, height);
-        for (WaterCurrent current : currents) {
-            if (hitbox.intersects(current.getHitbox())) {
-                speedX += current.getPushX();
-                speedY += current.getPushY();
-                return;
-            }
-        }
-    }
-
-    private void handleEnemiesAndPaintings(List<Enemy> enemies, List<Painting> paintings) {
-        Rectangle hitbox = new Rectangle(x, y, width, height);
         for (Enemy enemy : enemies) {
-            if (hitbox.intersects(enemy.getHitbox())) {
-                takeDamage();
+            if (playerHitbox.intersects(enemy.getHitbox())) {
+                // Knockback effect when touching an enemy
+                handleKnockbackFromEnemy(enemy.getHitbox());
+                takeDamage(); // Take damage from the enemy
+                if (health <= 0) {
+                    isAlive = false;
+                }
             }
         }
 
         for (Painting painting : paintings) {
-            if (hitbox.intersects(painting.getHitbox()) && !painting.isCollected()) {
+            if (!painting.isCollected() && playerHitbox.intersects(painting.getHitbox())) {
                 painting.collect();
+                gamePanel.increasePoints(); // Increase points when painting is collected
             }
         }
     }
 
+    private void handleSlideOffWall(Rectangle wallHitbox) {
+        // Adjust only one direction depending on the side of the collision
+        if (x < wallHitbox.x) {
+            speedX = -Math.abs(speedX) * 0.5; // Keep moving up/down, but reduce x speed
+        } else if (x + width > wallHitbox.x + wallHitbox.width) {
+            speedX = Math.abs(speedX) * 0.5; // Reflect horizontally, reduce momentum
+        }
+
+        if (y < wallHitbox.y) {
+            speedY = -Math.abs(speedY) * 0.5; // Reflect vertically, but keep horizontal speed
+        } else if (y + height > wallHitbox.y + wallHitbox.height) {
+            speedY = Math.abs(speedY) * 0.5;
+        }
+    }
+
+    private void handleKnockbackFromEnemy(Rectangle enemyHitbox) {
+        // Calculate the center of the player and enemy
+        int playerCenterX = x + width / 2;
+        int playerCenterY = y + height / 2;
+        int enemyCenterX = enemyHitbox.x + enemyHitbox.width / 2;
+        int enemyCenterY = enemyHitbox.y + enemyHitbox.height / 2;
+
+        // Calculate the vector from the enemy's center to the player's center
+        double deltaX = playerCenterX - enemyCenterX;
+        double deltaY = playerCenterY - enemyCenterY;
+        double magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Normalize the direction and apply a stronger knockback effect
+        deltaX /= magnitude;
+        deltaY /= magnitude;
+
+        // Apply the knockback effect in the opposite direction of the contact point
+        speedX = deltaX * maxSpeed * 1.5; // Stronger knockback on collision
+        speedY = deltaY * maxSpeed * 1.5;
+    }
+
     public void takeDamage() {
         health--;
-        if (health <= 0) {
-            health = 0; // Player dies
-        }
     }
 
     public Rectangle getHitbox() {
@@ -122,20 +177,16 @@ public class Player {
         return y;
     }
 
-    public void setPosition(int newX, int newY) {
-        this.x = newX;
-        this.y = newY;
-    }
-
     public int getHealth() {
         return health;
     }
 
-    public int getWidth() {
-        return width;
+    public boolean isAlive() {
+        return isAlive;
     }
 
-    public int getHeight() {
-        return height;
+    public void setPosition(int newX, int newY) {
+        this.x = newX;
+        this.y = newY;
     }
 }

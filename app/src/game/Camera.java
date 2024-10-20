@@ -1,31 +1,28 @@
 package game;
 
 /***
- * Camera class to handle following the player and transitions.
+ * Camera class handles following the player as they move through the map.
  */
 public class Camera {
-    private int x, y;
-    private final int width = 800;  // Screen width
-    private final int height = 600; // Screen height
 
-    public Camera(int x, int y) {
-        this.x = x;
-        this.y = y;
+    private int x, y;
+
+    public Camera(int startX, int startY) {
+        this.x = startX;
+        this.y = startY;
     }
 
     public void update(Player player) {
-        // Center camera on player, but ensure it stays within map bounds
-        x = player.getX() - width / 2;
-        y = player.getY() - height / 2;
+        // Camera follows player, but stops at map edges
+        x = player.getX() - 400; // Center player horizontally on screen
+        y = player.getY() - 300; // Center player vertically on screen
 
-        // Example map limits
         if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x > 1600 - width) x = 1600 - width; // Assuming map width is 1600
-        if (y > 1600 - height) y = 1600 - height; // Assuming map height is 1600
+        if (x > 1600 - 800) x = 1600 - 800; // Assuming 1600x1200 map and 800x600 screen
+        if (y > 1200 - 600) y = 1200 - 600;
     }
 
-    // Get camera position
     public int getX() {
         return x;
     }
