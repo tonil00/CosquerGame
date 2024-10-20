@@ -1,49 +1,30 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
+/***
+ * HUD class manages the player's health and displays it on the screen.
+ */
 public class HUD {
 
-    private int health;
-    private int score;
+    private final Player player;
 
-    public HUD() {
-        // Initial player stats
-        this.health = 100;
-        this.score = 0;
+    public HUD(Player player) {
+        this.player = player;
     }
 
-    // Decrease health by a certain amount
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health < 0) health = 0;
-    }
-
-    // Increase score by a certain amount
-    public void increaseScore(int points) {
-        score += points;
-    }
-
-    // Draw the HUD (health and score) on the screen
+    /***
+     * Draw the player's health bar (or hearts) on the screen.
+     * 
+     * @param g The Graphics object used for drawing.
+     */
     public void draw(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        
-        // Display Health
-        g.drawString("Health: " + health, 20, 40);
-        
-        // Display Score
-        g.drawString("Score: " + score, 20, 70);
-    }
+        g.setColor(Color.RED);
 
-    // Getter methods for health and score
-    public int getHealth() {
-        return health;
-    }
-
-    public int getScore() {
-        return score;
+        // Draw hearts based on player's health
+        for (int i = 0; i < player.getHealth(); i++) {
+            g.fillRect(20 + i * 40, 20, 30, 30); // Draw a simple rectangle for each heart
+        }
     }
 }
