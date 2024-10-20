@@ -5,63 +5,36 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * WaterCurrent class represents an area where the player is pushed in a specific direction.
+ * WaterCurrent represents the currents that push the player in the game.
  */
 public class WaterCurrent {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private double pushX;
-    private double pushY;
+    private final int x, y, width, height;
+    private final int pushX, pushY;
 
-    /***
-     * Constructor to initialize the current's position, size, and direction.
-     */
-    public WaterCurrent(int x, int y, int width, int height, double pushX, double pushY) {
+    public WaterCurrent(int x, int y, int pushX, int pushY) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = 100;
+        this.height = 20;
         this.pushX = pushX;
         this.pushY = pushY;
     }
 
-    /***
-     * Draw the water current on the screen.
-     * 
-     * @param g The Graphics object used for drawing.
-     */
     public void draw(Graphics g) {
-        g.setColor(new Color(0, 150, 255, 100)); // Semi-transparent blue to represent the current
-        g.fillRect(x, y, width, height);
+        g.setColor(Color.CYAN); // Draw the current in cyan
+        g.fillRect(x, y, width, height); // Draw the water current
     }
 
-    /***
-     * Get the hitbox of the water current.
-     * 
-     * @return A Rectangle representing the water current's area.
-     */
-    public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    /***
-     * Get the x-direction push of the current.
-     * 
-     * @return The x-direction push of the current.
-     */
-    public double getPushX() {
+    public int getPushX() {
         return pushX;
     }
 
-    /***
-     * Get the y-direction push of the current.
-     * 
-     * @return The y-direction push of the current.
-     */
-    public double getPushY() {
+    public int getPushY() {
         return pushY;
+    }
+
+    public Rectangle getHitbox() {
+        return new Rectangle(x, y, width, height);
     }
 }

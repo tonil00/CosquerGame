@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * Represents an obstacle in the game (e.g., a rock).
+ * Obstacle represents static objects in the game that the player must avoid.
  */
 public class Obstacle {
 
-    private int x, y, width, height;
+    private final int x, y, width, height;
 
     public Obstacle(int x, int y, int width, int height) {
         this.x = x;
@@ -19,8 +19,8 @@ public class Obstacle {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.DARK_GRAY); // Dark gray for obstacles
-        g.fillRect(x, y, width, height);
+        g.setColor(Color.DARK_GRAY); // Draw the obstacle as dark gray
+        g.fillRect(x, y, width, height); // Draw the obstacle
     }
 
     public Rectangle getHitbox() {

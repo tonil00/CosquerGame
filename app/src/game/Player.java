@@ -38,7 +38,6 @@ public class Player {
 
     public void update(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight,
                        List<Obstacle> obstacles, List<WaterCurrent> currents, List<Enemy> enemies, List<Painting> paintings) {
-        // Update player's position based on key inputs and handle interactions
         if (movingLeft) {
             speedX = Math.max(speedX - acceleration, -maxSpeed);
         } else if (movingRight) {
@@ -64,7 +63,6 @@ public class Player {
             y = nextY;
         }
 
-        // Handle water currents and other interactions (enemies, paintings)
         applyCurrentEffect(currents);
         handleEnemiesAndPaintings(enemies, paintings);
     }

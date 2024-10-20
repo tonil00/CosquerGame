@@ -5,15 +5,14 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * CrabEnemy represents an enemy crab in the game.
+ * CrabEnemy represents a crab enemy that damages the player upon contact.
  */
 public class CrabEnemy extends Enemy {
 
-    private int x, y, width, height;
+    private final int x, y, width, height; // These fields are final because they are not modified
 
     public CrabEnemy(int x, int y) {
-        // Assuming Enemy constructor requires (int x, int y, int health)
-        super(x, y, 3);  // Example: Initialize CrabEnemy with health = 3
+        super(x, y, 3); // Initialize the crab with a set health of 3
         this.x = x;
         this.y = y;
         this.width = 40;
@@ -22,13 +21,13 @@ public class CrabEnemy extends Enemy {
 
     @Override
     public void update(Player player) {
-        // Define crab behavior, e.g., moving towards the player or wandering
+        // Define behavior, e.g., moving towards the player or random movement
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.RED); // Color for crab
-        g.fillRect(x, y, width, height); // Draw crab as a rectangle
+        g.setColor(Color.RED); // Red color to indicate enemy
+        g.fillRect(x, y, width, height); // Draw the crab as a rectangle
     }
 
     @Override
