@@ -1,10 +1,16 @@
 package game;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -13,37 +19,39 @@ import javax.swing.Timer;
  */
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
-    private static final Color HUD_COLOR = Color.BLACK; // Black color for the HUD bar
-    private static final Color PAUSE_OVERLAY_COLOR = new Color(255, 0, 0, 50); // 20% Red overlay when paused
-    
+    private static final Color HUD_COLOR = Color.BLACK;
+    private static final Color PAUSE_OVERLAY_COLOR = new Color(255, 0, 0, 50);
+
     private final Timer timer;
     private final Player player;
     private final MapManager mapManager;
     private final Camera camera;
     private boolean upPressed, downPressed, leftPressed, rightPressed;
-    private boolean gamePaused = false; // Boolean to handle pause state
-    private int points = 0; // Points counter
-    private final int hudHeight = 50; // Height of the HUD bar
-    
+    private boolean gamePaused = false;
+    private int points = 0;
+    public static final int HUD_HEIGHT = 50; // Adjusted to follow naming convention
+    public static final int MAP_WIDTH = 5000; // Adjusted to follow naming convention
+    public static final int MAP_HEIGHT = 3000; // Adjusted to follow naming convention
+
     public GamePanel() {
-        player = new Player(100, 100); 
+        player = new Player(100, 100);
         mapManager = new MapManager();
-        camera = new Camera(0, 0); 
+        camera = new Camera(0, 0);
 
-        initializeMapTiles(); 
+        initializeMapTiles();
 
-        timer = new Timer(30, this); 
+        timer = new Timer(30, this);
         this.setFocusable(true);
         this.addKeyListener(this);
     }
 
     private void initializeMapTiles() {
-        MapTile entranceTile = new MapTile(new Color(0, 100, 255)); // Lighter mid-blue
-        entranceTile.addEnemy(new CrabEnemy(300, 200)); 
-        entranceTile.addObstacle(new Obstacle(200, 150, 100, 50)); 
-        entranceTile.addCurrent(new WaterCurrent(100, 100, 1, 0)); 
+        MapTile entranceTile = new MapTile(new Color(0, 100, 255));
+        entranceTile.addEnemy(new CrabEnemy(300, 200));
+        entranceTile.addObstacle(new Obstacle(200, 150, 100, 50));
+        entranceTile.addCurrent(new WaterCurrent(100, 100, 1, 0));
 
-        MapTile deepTile = new MapTile(new Color(0, 0, 139)); // Darker blue
+        MapTile deepTile = new MapTile(new Color(0, 0, 139));
         deepTile.addEnemy(new LargeFishEnemy(400, 300));
         deepTile.addPainting(new Painting(500, 100));
 
@@ -54,14 +62,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gamePaused) {
-            player.update(upPressed, downPressed, leftPressed, rightPressed,
-                          mapManager.getCurrentObstacles(), mapManager.getCurrentCurrents(),
-                          mapManager.getCurrentEnemies(), mapManager.getCurrentPaintings(),
-                          this);
-            mapManager.updateTileTransition(player);
+            player.update(upPressed, downPressed, leftPressed, rightPressed, this);
             camera.update(player);
         }
-        repaint(); 
+        repaint();
     }
 
     @Override
@@ -93,20 +97,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         // The camera translates the map and player, but not the HUD
         g.translate(-camera.getX(), -camera.getY());
-        mapManager.drawCurrentTile(g); 
-        player.draw(g); 
+        mapManager.drawCurrentTile(g);
+        player.draw(g);
+
+        // Draw the gradient overlay effect (water depth)
+        drawWaterDepthOverlay(g);
 
         // Translate back to prevent the HUD from moving with the camera
         g.translate(camera.getX(), camera.getY());
 
         // Draw the static HUD that stays at the top of the screen
         drawHUD(g);
-
-        // Draw the gradient overlay effect (water depth)
-        drawWaterDepthOverlay(g);
 
         // If the game is paused, overlay the screen with a 20% red tint
         if (gamePaused) {
@@ -117,7 +121,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private void drawHUD(Graphics g) {
         // Draw a black bar at the top for the HUD
         g.setColor(HUD_COLOR);
-        g.fillRect(0, 0, getWidth(), hudHeight);
+        g.fillRect(0, 0, getWidth(), HUD_HEIGHT);
 
         // Draw health (hearts) on the left side
         drawHealth(g);
@@ -132,24 +136,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private void drawHealth(Graphics g) {
         g.setColor(Color.RED);
         for (int i = 0; i < player.getHealth(); i++) {
-            g.fillRect(20 + (i * 20), 10, 15, 15); // Draw hearts for health
+            g.fillRect(20 + (i * 20), 10, 15, 15);
         }
     }
 
     private void drawPauseButton(Graphics g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 18));
-        g.drawString("Pause (P)", getWidth() / 2 - 40, 30); // Centered pause button
+        g.drawString("Pause (P)", getWidth() / 2 - 40, 30);
     }
 
     private void drawPointsCounter(Graphics g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 18));
-        g.drawString("Points: " + points, getWidth() - 120, 30); // Points at top right
+        g.drawString("Points: " + points, getWidth() - 120, 30);
     }
 
     private void drawPauseOverlay(Graphics g) {
-        // Draw the red overlay when the game is paused
         g.setColor(PAUSE_OVERLAY_COLOR);
         g.fillRect(0, 0, getWidth(), getHeight());
     }
@@ -167,14 +170,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         RadialGradientPaint gradient = new RadialGradientPaint(center, radius, fractions, colors);
         g2d.setPaint(gradient);
-        g2d.fillRect(0, hudHeight, getWidth(), getHeight() - hudHeight); // Apply gradient starting from below the HUD
+        g2d.fillRect(0, HUD_HEIGHT, getWidth(), getHeight() - HUD_HEIGHT);
     }
 
     public void increasePoints() {
-        points += 100; // Increase points when a painting is collected
+        points += 100;
     }
 
     public void startGame() {
-        timer.start(); 
+        timer.start();
     }
 }

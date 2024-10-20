@@ -6,49 +6,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /***
- * MapTile represents one tile of the game map. It contains obstacles, enemies, paintings, and water currents.
+ * MapTile represents a section of the map, containing enemies, obstacles, currents, and paintings.
  */
 public class MapTile {
 
     private final Color backgroundColor;
     private final List<Obstacle> obstacles;
+    private final List<WaterCurrent> currents;
     private final List<Enemy> enemies;
     private final List<Painting> paintings;
-    private final List<WaterCurrent> currents;
 
     public MapTile(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
         this.obstacles = new ArrayList<>();
+        this.currents = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.paintings = new ArrayList<>();
-        this.currents = new ArrayList<>();
-    }
-
-    public void draw(Graphics g) {
-        // Fill the background with the tile's color
-        g.setColor(backgroundColor);
-        g.fillRect(0, 0, 800, 600); // Assuming fixed screen size for simplicity
-
-        // Draw all objects
-        for (Obstacle obstacle : obstacles) {
-            obstacle.draw(g);
-        }
-
-        for (Enemy enemy : enemies) {
-            enemy.draw(g);
-        }
-
-        for (Painting painting : paintings) {
-            painting.draw(g);
-        }
-
-        for (WaterCurrent current : currents) {
-            current.draw(g);
-        }
     }
 
     public void addObstacle(Obstacle obstacle) {
         obstacles.add(obstacle);
+    }
+
+    public void addCurrent(WaterCurrent current) {
+        currents.add(current);
     }
 
     public void addEnemy(Enemy enemy) {
@@ -59,12 +40,30 @@ public class MapTile {
         paintings.add(painting);
     }
 
-    public void addCurrent(WaterCurrent current) {
-        currents.add(current);
+    public void draw(Graphics g) {
+        g.setColor(backgroundColor);
+        g.fillRect(0, 0, 5000, 3000);
+
+        for (Obstacle obstacle : obstacles) {
+            obstacle.draw(g);
+        }
+        for (WaterCurrent current : currents) {
+            current.draw(g);
+        }
+        for (Enemy enemy : enemies) {
+            enemy.draw(g);
+        }
+        for (Painting painting : paintings) {
+            painting.draw(g);
+        }
     }
 
     public List<Obstacle> getObstacles() {
         return obstacles;
+    }
+
+    public List<WaterCurrent> getCurrents() {
+        return currents;
     }
 
     public List<Enemy> getEnemies() {
@@ -73,9 +72,5 @@ public class MapTile {
 
     public List<Painting> getPaintings() {
         return paintings;
-    }
-
-    public List<WaterCurrent> getCurrents() {
-        return currents;
     }
 }

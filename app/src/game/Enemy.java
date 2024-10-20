@@ -4,26 +4,26 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * Enemy is the base class for all enemy types in the game.
+ * Abstract Enemy class representing a generic enemy in the game.
  */
 public abstract class Enemy {
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
 
-    protected int x, y;
-    protected final int damage;
-
-    public Enemy(int x, int y, int damage) {
+    public Enemy(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.damage = damage;
+        this.width = width;
+        this.height = height;
     }
 
     public abstract void update(Player player);
 
     public abstract void draw(Graphics g);
 
-    public abstract Rectangle getHitbox();
-
-    public int getDamage() {
-        return damage;
+    public Rectangle getHitbox() {
+        return new Rectangle(x, y, width, height);
     }
 }
