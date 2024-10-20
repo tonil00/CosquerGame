@@ -4,7 +4,7 @@ Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate
 
 ## 🎮 Gameplay Screenshot
 
-![Gameplay](./path-to-your-screenshot.png)
+![Gameplay](.screenshotonceit'sdone.png)
 
 ## 🐠 Features
 - Large cave map divided into multiple tiles for exploration.
