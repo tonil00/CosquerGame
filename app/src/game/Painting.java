@@ -5,62 +5,37 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * Painting class represents the collectible paintings in the game.
+ * Painting represents a collectible prehistoric painting in the game.
  */
 public class Painting {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private int x, y;
+    private int width = 30;
+    private int height = 30;
     private boolean collected;
 
-    /***
-     * Constructor to initialize the painting's position and size.
-     */
     public Painting(int x, int y) {
         this.x = x;
         this.y = y;
-        this.width = 30; // Arbitrary width for the painting
-        this.height = 30; // Arbitrary height for the painting
         this.collected = false;
     }
 
-    /***
-     * Draw the painting on the screen.
-     * If collected, it is no longer drawn.
-     * 
-     * @param g The Graphics object used for drawing.
-     */
     public void draw(Graphics g) {
         if (!collected) {
-            g.setColor(Color.ORANGE); // Paintings are orange squares
-            g.fillRect(x, y, width, height);
+            g.setColor(Color.YELLOW); // Bright yellow to stand out
+            g.fillRect(x, y, width, height); // Draw painting as a square for now
         }
     }
 
-    /***
-     * Get the hitbox of the painting.
-     * 
-     * @return A Rectangle representing the painting's hitbox.
-     */
-    public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    /***
-     * Mark the painting as collected.
-     */
     public void collect() {
         collected = true;
     }
 
-    /***
-     * Check if the painting has been collected.
-     * 
-     * @return True if the painting has been collected, false otherwise.
-     */
     public boolean isCollected() {
         return collected;
+    }
+
+    public Rectangle getHitbox() {
+        return new Rectangle(x, y, width, height);
     }
 }

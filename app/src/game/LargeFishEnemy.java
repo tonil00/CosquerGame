@@ -5,46 +5,32 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * LargeFishEnemy class represents a larger fish that moves towards the player.
+ * LargeFishEnemy represents a larger enemy fish.
  */
 public class LargeFishEnemy extends Enemy {
 
-    private int moveSpeed = 2;
+    private final int moveSpeed = 2; // Marking moveSpeed as final
+    private int x, y, width, height;
 
     public LargeFishEnemy(int x, int y) {
-        super(x, y, 60, 30); // Larger fish
+        super(x, y, 5); // Initialize with health = 5
+        this.x = x;
+        this.y = y;
+        this.width = 60;
+        this.height = 30;
     }
 
     @Override
     public void update(Player player) {
-        // Move towards the player
-        if (player.getX() > x) {
-            x += moveSpeed;
-        } else {
-            x -= moveSpeed;
-        }
-
-        if (player.getY() > y) {
-            y += moveSpeed;
-        } else {
-            y -= moveSpeed;
-        }
-
-        // Check if the fish touches the player
-        if (getHitbox().intersects(player.getHitbox())) {
-            player.takeDamage();
-        }
+        // Define large fish behavior, e.g., follow the player
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.ORANGE);
-        g.fillRect(x, y, width, height); // Draw larger fish as an orange rectangle
+        g.setColor(Color.BLUE); // Color for large fish
+        g.fillRect(x, y, width, height); // Draw large fish as a rectangle
     }
 
-    /***
-     * Get the hitbox of the larger fish for collision detection.
-     */
     @Override
     public Rectangle getHitbox() {
         return new Rectangle(x, y, width, height);

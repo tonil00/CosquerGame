@@ -10,18 +10,18 @@ import java.util.List;
  */
 public class MapTile {
     
-    private List<Obstacle> obstacles;
-    private List<Painting> paintings;
-    private List<Enemy> enemies;
-    private List<WaterCurrent> currents;
-    private Color backgroundColor;
+    private final List<Obstacle> obstacles; // Marked as final
+    private final List<Painting> paintings; // Marked as final
+    private final List<Enemy> enemies; // Marked as final
+    private final List<WaterCurrent> currents; // Marked as final
+    private final Color backgroundColor; // Marked as final
 
     public MapTile(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
         this.obstacles = new ArrayList<>();
         this.paintings = new ArrayList<>();
         this.enemies = new ArrayList<>();
-        this.currents = new ArrayList<>(); // Initialize currents list
+        this.currents = new ArrayList<>();
     }
 
     public void addObstacle(Obstacle obstacle) {
@@ -44,22 +44,18 @@ public class MapTile {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, 800, 600); // Draw background for the tile
 
-        // Draw all obstacles
         for (Obstacle obstacle : obstacles) {
             obstacle.draw(g);
         }
 
-        // Draw all paintings
         for (Painting painting : paintings) {
             painting.draw(g);
         }
 
-        // Draw all enemies
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }
 
-        // Draw all water currents
         for (WaterCurrent current : currents) {
             current.draw(g);
         }

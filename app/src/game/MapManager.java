@@ -50,38 +50,18 @@ public class MapManager {
         }
     }
 
-    /***
-     * Get the obstacles in the current tile.
-     * 
-     * @return List of obstacles in the current tile.
-     */
     public List<Obstacle> getCurrentObstacles() {
         return tiles.get(currentTileIndex).getObstacles();
     }
 
-    /***
-     * Get the water currents in the current tile.
-     * 
-     * @return List of water currents in the current tile.
-     */
     public List<WaterCurrent> getCurrentCurrents() {
-        return tiles.get(currentTileIndex).getCurrents(); // Ensure MapTile has this method.
+        return tiles.get(currentTileIndex).getCurrents();
     }
 
-    /***
-     * Get the enemies in the current tile.
-     * 
-     * @return List of enemies in the current tile.
-     */
     public List<Enemy> getCurrentEnemies() {
         return tiles.get(currentTileIndex).getEnemies();
     }
 
-    /***
-     * Get the paintings in the current tile.
-     * 
-     * @return List of paintings in the current tile.
-     */
     public List<Painting> getCurrentPaintings() {
         return tiles.get(currentTileIndex).getPaintings();
     }

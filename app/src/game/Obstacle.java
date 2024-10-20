@@ -5,18 +5,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * Obstacle class represents the obstacles in the game.
+ * Represents an obstacle in the game (e.g., a rock).
  */
 public class Obstacle {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private int x, y, width, height;
 
-    /***
-     * Constructor to initialize the obstacle's position and size.
-     */
     public Obstacle(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -24,21 +18,11 @@ public class Obstacle {
         this.height = height;
     }
 
-    /***
-     * Draw the obstacle on the screen.
-     * 
-     * @param g The Graphics object used for drawing.
-     */
     public void draw(Graphics g) {
-        g.setColor(Color.GRAY);
-        g.fillRect(x, y, width, height); // Draw the obstacle as a gray rectangle
+        g.setColor(Color.DARK_GRAY); // Dark gray for obstacles
+        g.fillRect(x, y, width, height);
     }
 
-    /***
-     * Get the hitbox of the obstacle.
-     * 
-     * @return A Rectangle representing the obstacle's hitbox.
-     */
     public Rectangle getHitbox() {
         return new Rectangle(x, y, width, height);
     }

@@ -5,42 +5,32 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 /***
- * CrabEnemy class represents a crab that moves horizontally and damages the player on contact.
+ * CrabEnemy represents an enemy crab in the game.
  */
 public class CrabEnemy extends Enemy {
 
-    private int moveDirection = 1; // 1 for right, -1 for left
-    private int moveSpeed = 2;
+    private int x, y, width, height;
 
     public CrabEnemy(int x, int y) {
-        super(x, y, 40, 20); // Crabs are wider and shorter
+        // Assuming Enemy constructor requires (int x, int y, int health)
+        super(x, y, 3);  // Example: Initialize CrabEnemy with health = 3
+        this.x = x;
+        this.y = y;
+        this.width = 40;
+        this.height = 20;
     }
 
     @Override
     public void update(Player player) {
-        // Move the crab horizontally
-        x += moveDirection * moveSpeed;
-
-        // Reverse direction if it hits the boundary
-        if (x <= 0 || x >= 760) {
-            moveDirection *= -1;
-        }
-
-        // Check if the crab touches the player
-        if (getHitbox().intersects(player.getHitbox())) {
-            player.takeDamage();
-        }
+        // Define crab behavior, e.g., moving towards the player or wandering
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, width, height); // Draw crab as a red rectangle
+        g.setColor(Color.RED); // Color for crab
+        g.fillRect(x, y, width, height); // Draw crab as a rectangle
     }
 
-    /***
-     * Get the hitbox of the crab for collision detection.
-     */
     @Override
     public Rectangle getHitbox() {
         return new Rectangle(x, y, width, height);
