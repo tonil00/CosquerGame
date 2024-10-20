@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     private static final Color HUD_COLOR = Color.BLACK;
     private static final Color PAUSE_OVERLAY_COLOR = new Color(255, 0, 0, 50);
+    private static final Color WALL_COLOR = new Color(0, 0, 0, 150); // Slightly transparent black for walls
 
     private final Timer timer;
     private final Player player;
@@ -34,7 +35,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public static final int MAP_HEIGHT = 3000; // Adjusted to follow naming convention
 
     public GamePanel() {
-        player = new Player(100, 100);
+        // Player starts at the exact bottom-left corner
+        player = new Player(100, MAP_HEIGHT - 150); // Starts at the bottom-left corner, a little off the wall for visibility
         mapManager = new MapManager();
         camera = new Camera(0, 0);
 
@@ -98,13 +100,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Set a dynamic blue gradient background that moves with the camera
+        drawDynamicBlueBackground(g);
+
         // The camera translates the map and player, but not the HUD
         g.translate(-camera.getX(), -camera.getY());
         mapManager.drawCurrentTile(g);
+        drawWalls(g); // Draw walls on all four sides of the map
         player.draw(g);
-
-        // Draw the gradient overlay effect (water depth)
-        drawWaterDepthOverlay(g);
 
         // Translate back to prevent the HUD from moving with the camera
         g.translate(camera.getX(), camera.getY());
@@ -157,10 +160,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 
-    private void drawWaterDepthOverlay(Graphics g) {
+    private void drawDynamicBlueBackground(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
+
+        // Set up the gradient to dynamically change based on camera position
+        int centerX = getWidth() / 2 + camera.getX();
+        int centerY = getHeight() / 2 + camera.getY();
         float radius = (float) Math.max(getWidth(), getHeight()) / 2.0f;
         Point2D center = new Point2D.Float(centerX, centerY);
 
@@ -170,7 +175,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         RadialGradientPaint gradient = new RadialGradientPaint(center, radius, fractions, colors);
         g2d.setPaint(gradient);
-        g2d.fillRect(0, HUD_HEIGHT, getWidth(), getHeight() - HUD_HEIGHT);
+        g2d.fillRect(0, 0, MAP_WIDTH, MAP_HEIGHT);
+    }
+
+    private void drawWalls(Graphics g) {
+        g.setColor(WALL_COLOR);
+
+        // Draw walls on all four sides of the map
+        g.fillRect(0, 0, 50, MAP_HEIGHT); // Left wall
+        g.fillRect(0, HUD_HEIGHT, MAP_WIDTH, 50); // Top wall
+        g.fillRect(MAP_WIDTH - 50, 0, 50, MAP_HEIGHT); // Right wall
+        g.fillRect(0, MAP_HEIGHT - 50, MAP_WIDTH, 50); // Bottom wall
     }
 
     public void increasePoints() {

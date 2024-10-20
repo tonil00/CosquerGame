@@ -84,14 +84,22 @@ public class Player {
     }
 
     private void handleScreenEdgeCollisions(GamePanel gamePanel) {
-        // Handle bouncing off the screen edges
-        if (x <= 0) {
-            x = 0;
-            speedX = Math.abs(speedX) * bounceReduction; // Bounce off left edge smoothly (reduce speed)
+        // Handle bouncing off the screen edges (walls around the entire map)
+        if (x <= 50) {
+            x = 50;
+            speedX = Math.abs(speedX) * bounceReduction; // Bounce off left wall smoothly
         }
-        if (y <= GamePanel.HUD_HEIGHT) {
-            y = GamePanel.HUD_HEIGHT;
-            speedY = Math.abs(speedY) * bounceReduction; // Bounce off top edge smoothly
+        if (y <= GamePanel.HUD_HEIGHT + 50) {
+            y = GamePanel.HUD_HEIGHT + 50;
+            speedY = Math.abs(speedY) * bounceReduction; // Bounce off top wall smoothly
+        }
+        if (x + width >= GamePanel.MAP_WIDTH - 50) {
+            x = GamePanel.MAP_WIDTH - width - 50;
+            speedX = -Math.abs(speedX) * bounceReduction; // Bounce off right wall smoothly
+        }
+        if (y + height >= GamePanel.MAP_HEIGHT - 50) {
+            y = GamePanel.MAP_HEIGHT - height - 50;
+            speedY = -Math.abs(speedY) * bounceReduction; // Bounce off bottom wall smoothly
         }
 
         // Stop bouncing if the speed gets too low
