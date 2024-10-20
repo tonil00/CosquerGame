@@ -2,7 +2,9 @@
 
 Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate as a fish through the mysterious, prehistoric Cosquer Cave! Encounter crabs, larger fish, and collect prehistoric paintings as you journey through this dark, underwater world.
 
-![Logo](./img/logo.jpg)
+<p align="center">
+    <img src="./img/logo.jpg" alt="Logo" width="50%">
+</p>
 
 ---
 
