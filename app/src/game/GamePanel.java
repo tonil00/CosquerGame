@@ -19,10 +19,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private boolean upPressed, downPressed, leftPressed, rightPressed;
 
     public GamePanel() {
-        this.setBackground(java.awt.Color.BLUE); 
+        this.setBackground(java.awt.Color.BLUE); // Set background color to blue
         this.setFocusable(true);
 
-        player = new Player(100, 100);  
+        // Default initialization with placeholder values (to be adjusted later)
+        player = new Player(100, 100, 800, 600);  // Initialize player with default screen size
         hud = new HUD(player);  
         timer = new Timer(30, this); 
 
@@ -43,6 +44,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // DEBUG: Print player's position to console
+        // System.out.println("Player Position: (" + player.getX() + ", " + player.getY() + ")");
+
+        // Adjust player position based on the real dimensions of the screen (only once after layout)
+        if (player.getX() < 0 && player.getY() < 0) {
+            player.setPosition(0, getHeight() - player.getHeight());  // Place the player at bottom-left corner
+        }
 
         // Draw the player
         player.draw(g);

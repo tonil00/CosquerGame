@@ -7,55 +7,77 @@ public class Player {
 
     private int x;
     private int y;
-    private final int health = 100;  // Final since it’s not reassigned
-    private final int score = 0;  // Final since it’s not reassigned
-    private final int width;
-    private final int height;
+    private final int width = 50;  // Player width
+    private final int height = 30;  // Player height
     private int speedX;
     private int speedY;
 
-    // Constructor
-    public Player(int startX, int startY) {
+    private final int gameWidth;
+    private final int gameHeight;
+
+    // Constructor to spawn player with default position
+    public Player(int startX, int startY, int gameWidth, int gameHeight) {
         this.x = startX;
         this.y = startY;
-        this.width = 50;
-        this.height = 30;
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
         this.speedX = 0;
         this.speedY = 0;
     }
 
-    // Getter for health
-    public int getHealth() {
-        return health;
+    // Method to manually set player's position
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    // Getter for score
-    public int getScore() {
-        return score;
+    // Method to get player height
+    public int getHeight() {
+        return height;
     }
 
-    // Method to update player's position
+    // Update the player's position and enforce screen boundary constraints
     public void update() {
         x += speedX;
         y += speedY;
+
+        // Prevent player from going beyond the left edge
+        if (x < 0) {
+            x = 0;
+        }
+        // Prevent player from going beyond the right edge (subtracting player width)
+        if (x > gameWidth - (3*width)/2) {
+            x = gameWidth - (3*width)/2;
+        }
+        // Prevent player from going beyond the top edge
+        if (y < 0) {
+            y = 0;
+        }
+        // Prevent player from going beyond the bottom edge (subtracting player height)
+        if (y > gameHeight - 4*height) {
+            y = gameHeight - 4*height;
+        }
     }
 
-    // Method to set player's speed
+    // Set player's speed based on user input
     public void setSpeed(int speedX, int speedY) {
         this.speedX = speedX;
         this.speedY = speedY;
     }
 
-    // Method to stop player's movement
-    public void stopMoving() {
-        this.speedX = 0;
-        this.speedY = 0;
-    }
-
     // Draw the player on the screen
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.fillOval(x, y, width, height); // Draw player as a yellow oval
+        g.setColor(Color.RED);  // Make the player red for visibility
+        g.fillOval(x, y, width, height);  // Draw the player as a red oval
+    }
+
+    // Optional methods for health and score
+    public int getHealth() {
+        return 100;  // Default health
+    }
+
+    public int getScore() {
+        return 0;  // Default score
     }
 
     // Get the x-coordinate of the player
