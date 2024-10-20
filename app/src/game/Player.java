@@ -45,9 +45,10 @@ public class Player {
     }
 
     /***
-     * Update the player's position, apply acceleration or deceleration, and handle water currents.
+     * Update the player's position, apply acceleration or deceleration, and handle obstacles, currents, enemies, and paintings.
      */
-    public void update(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight, List<Obstacle> obstacles, List<WaterCurrent> currents, List<Enemy> enemies, List<Painting> paintings) {
+    public void update(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight,
+                       List<Obstacle> obstacles, List<WaterCurrent> currents, List<Enemy> enemies, List<Painting> paintings) {
         if (!isAlive()) return; // Skip updating if the player is dead
 
         // Apply normal movement

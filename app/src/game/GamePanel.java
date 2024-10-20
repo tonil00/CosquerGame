@@ -9,14 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /***
- * GamePanel class manages the game's main rendering and logic, including
- * player movement, enemy interactions, and map transitions.
+ * GamePanel class manages the game's main rendering and logic.
  */
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
