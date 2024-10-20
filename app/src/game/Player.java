@@ -59,23 +59,8 @@ public class Player {
         x += speedX;
         y += speedY;
 
-        // Bound player within map limits and below the HUD
-        if (x < 0) {
-            x = 0;
-            speedX = -speedX * 0.5; // Bounce off left wall (reduced momentum)
-        }
-        if (y < hudHeight) {
-            y = hudHeight; // Prevent player from going into the HUD
-            speedY = -speedY * 0.5; // Bounce off top (reduced momentum)
-        }
-        if (x > 800 - width) {
-            x = 800 - width;
-            speedX = -speedX * 0.5; // Bounce off right wall (reduced momentum)
-        }
-        if (y > 600 - height) {
-            y = 600 - height;
-            speedY = -speedY * 0.5; // Bounce off bottom wall (reduced momentum)
-        }
+        // Ensure smooth bouncing off the screen edges
+        handleScreenEdgeCollisions();
     }
 
     private void handleMovement(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight) {
@@ -126,17 +111,31 @@ public class Player {
     }
 
     private void handleSlideOffWall(Rectangle wallHitbox) {
-        // Adjust only one direction depending on the side of the collision
-        if (x < wallHitbox.x) {
-            speedX = -Math.abs(speedX) * 0.5; // Keep moving up/down, but reduce x speed
-        } else if (x + width > wallHitbox.x + wallHitbox.width) {
-            speedX = Math.abs(speedX) * 0.5; // Reflect horizontally, reduce momentum
+        // Check for collision on the left or right side of the obstacle
+        if (x + width > wallHitbox.x && x < wallHitbox.x + wallHitbox.width) {
+            // Vertical collision (top or bottom)
+            if (y < wallHitbox.y && speedY > 0) {
+                // Bumping into the top of the wall
+                y = wallHitbox.y - height;
+                speedY = -Math.abs(speedY) * 0.5; // Reduce vertical speed
+            } else if (y + height > wallHitbox.y + wallHitbox.height && speedY < 0) {
+                // Bumping into the bottom of the wall
+                y = wallHitbox.y + wallHitbox.height;
+                speedY = Math.abs(speedY) * 0.5;
+            }
         }
 
-        if (y < wallHitbox.y) {
-            speedY = -Math.abs(speedY) * 0.5; // Reflect vertically, but keep horizontal speed
-        } else if (y + height > wallHitbox.y + wallHitbox.height) {
-            speedY = Math.abs(speedY) * 0.5;
+        // Horizontal collision (left or right side of the obstacle)
+        if (y + height > wallHitbox.y && y < wallHitbox.y + wallHitbox.height) {
+            if (x < wallHitbox.x && speedX > 0) {
+                // Bumping into the left side of the wall
+                x = wallHitbox.x - width;
+                speedX = -Math.abs(speedX) * 0.5; // Reduce horizontal speed
+            } else if (x + width > wallHitbox.x + wallHitbox.width && speedX < 0) {
+                // Bumping into the right side of the wall
+                x = wallHitbox.x + wallHitbox.width;
+                speedX = Math.abs(speedX) * 0.5;
+            }
         }
     }
 
@@ -159,6 +158,26 @@ public class Player {
         // Apply the knockback effect in the opposite direction of the contact point
         speedX = deltaX * maxSpeed * 1.5; // Stronger knockback on collision
         speedY = deltaY * maxSpeed * 1.5;
+    }
+
+    private void handleScreenEdgeCollisions() {
+        // Handle bouncing off the screen edges
+        if (x <= 0) {
+            x = 0;
+            speedX = Math.abs(speedX) * 0.9; // Bounce off left edge smoothly (reduce speed slightly)
+        }
+        if (x + width >= 800) {
+            x = 800 - width;
+            speedX = -Math.abs(speedX) * 0.9; // Bounce off right edge smoothly
+        }
+        if (y <= hudHeight) {
+            y = hudHeight;
+            speedY = Math.abs(speedY) * 0.9; // Bounce off top edge smoothly
+        }
+        if (y + height >= 600) {
+            y = 600 - height;
+            speedY = -Math.abs(speedY) * 0.9; // Bounce off bottom edge smoothly
+        }
     }
 
     public void takeDamage() {
