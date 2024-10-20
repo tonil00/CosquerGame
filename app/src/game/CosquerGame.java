@@ -3,11 +3,11 @@ package game;
 import javax.swing.JFrame;
 
 /**
- * Main class to start the game.
+ * Main class to start the game after the main menu.
  */
 public class CosquerGame {
 
-    public static void main(String[] args) {
+    public CosquerGame() {
         // Create the game window (JFrame)
         JFrame window = new JFrame("Cosquer Cave Explorer");
 
@@ -26,5 +26,10 @@ public class CosquerGame {
 
         // Start the game loop (this can be inside the game panel or another class)
         gamePanel.startGame();
+    }
+
+    // Main method for testing purposes (to bypass the main menu)
+    public static void main(String[] args) {
+        new CosquerGame();
     }
 }

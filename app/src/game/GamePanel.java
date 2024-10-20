@@ -5,109 +5,100 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
-    private final Timer timer;  
-    private final Player player;  
-    private final HUD hud;  
+    // Timer to control the game loop
+    private Timer timer;
+    private Player player;
+    private List<Obstacle> obstacles;
 
     // Track which keys are pressed
     private boolean upPressed, downPressed, leftPressed, rightPressed;
 
     public GamePanel() {
-        this.setBackground(java.awt.Color.BLUE); // Set background color to blue
+        this.setBackground(java.awt.Color.BLUE); // Set background to represent the sea
         this.setFocusable(true);
+        this.addKeyListener(this); // Listen for key events
 
-        // Default initialization with placeholder values (to be adjusted later)
-        player = new Player(100, 100, 800, 600);  // Initialize player with default screen size
-        hud = new HUD(player);  
-        timer = new Timer(30, this); 
+        player = new Player(100, 100); // Create a new Player instance (the fish)
+        timer = new Timer(30, this); // Timer for the game loop (30ms delay)
 
-        initializeListeners(); 
-    }
-
-    // Moved key listener setup here to avoid leaking 'this'
-    private void initializeListeners() {
-        this.addKeyListener(this); 
+        // Initialize obstacles (Example obstacles, you can customize them)
+        obstacles = new ArrayList<>();
+        obstacles.add(new Obstacle(200, 150, 100, 50));
+        obstacles.add(new Obstacle(300, 300, 50, 100));
     }
 
     // Start the game loop
     public void startGame() {
-        timer.start(); 
+        timer.start(); // Start the timer, which calls actionPerformed
     }
 
-    // Render the game and the HUD
+    // Render the game
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // DEBUG: Print player's position to console
-        // System.out.println("Player Position: (" + player.getX() + ", " + player.getY() + ")");
-
-        // Adjust player position based on the real dimensions of the screen (only once after layout)
-        if (player.getX() < 0 && player.getY() < 0) {
-            player.setPosition(0, getHeight() - player.getHeight());  // Place the player at bottom-left corner
+        player.draw(g); // Draw the fish
+        for (Obstacle obstacle : obstacles) {
+            obstacle.draw(g); // Draw obstacles
         }
-
-        // Draw the player
-        player.draw(g);
-
-        // Draw the HUD (health, score, etc.)
-        hud.render(g);
     }
 
-    // Update the game (move the player, etc.)
+    // Update the game (move the fish)
     @Override
     public void actionPerformed(ActionEvent e) {
-        updatePlayerMovement();  // Check and update player movement
-        player.update();  // Update player position
-        repaint();  // Redraw the screen
+        // Pass the key press status and obstacles to the player's update method
+        player.update(upPressed, downPressed, leftPressed, rightPressed, obstacles);
+        repaint(); // Repaint the screen after every game update
     }
 
-    // Update player movement based on key states
-    private void updatePlayerMovement() {
-        int speedX = 0;
-        int speedY = 0;
-
-        if (upPressed) speedY = -5;  // Move up
-        if (downPressed) speedY = 5;  // Move down
-        if (leftPressed) speedX = -5;  // Move left
-        if (rightPressed) speedX = 5;  // Move right
-
-        player.setSpeed(speedX, speedY);  // Set player speed based on key input
-    }
-
-    // Handle key presses
+    // Handle key press events
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W -> upPressed = true;  // W key pressed
-            case KeyEvent.VK_S -> downPressed = true;  // S key pressed
-            case KeyEvent.VK_A -> leftPressed = true;  // A key pressed
-            case KeyEvent.VK_D -> rightPressed = true;  // D key pressed
-            case KeyEvent.VK_UP -> upPressed = true;  // Up arrow pressed
-            case KeyEvent.VK_DOWN -> downPressed = true;  // Down arrow pressed
-            case KeyEvent.VK_LEFT -> leftPressed = true;  // Left arrow pressed
-            case KeyEvent.VK_RIGHT -> rightPressed = true;  // Right arrow pressed
+        int keyCode = e.getKeyCode();
+
+        // Set flags when keys are pressed
+        switch (keyCode) {
+            case KeyEvent.VK_UP:
+                upPressed = true;
+                break;
+            case KeyEvent.VK_DOWN:
+                downPressed = true;
+                break;
+            case KeyEvent.VK_LEFT:
+                leftPressed = true;
+                break;
+            case KeyEvent.VK_RIGHT:
+                rightPressed = true;
+                break;
         }
     }
 
-    // Handle key releases
+    // Handle key releases to stop the fish's movement
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W -> upPressed = false;  // W key released
-            case KeyEvent.VK_S -> downPressed = false;  // S key released
-            case KeyEvent.VK_A -> leftPressed = false;  // A key released
-            case KeyEvent.VK_D -> rightPressed = false;  // D key released
-            case KeyEvent.VK_UP -> upPressed = false;  // Up arrow released
-            case KeyEvent.VK_DOWN -> downPressed = false;  // Down arrow released
-            case KeyEvent.VK_LEFT -> leftPressed = false;  // Left arrow released
-            case KeyEvent.VK_RIGHT -> rightPressed = false;  // Right arrow released
+        int keyCode = e.getKeyCode();
+
+        // Reset flags when keys are released
+        switch (keyCode) {
+            case KeyEvent.VK_UP:
+                upPressed = false;
+                break;
+            case KeyEvent.VK_DOWN:
+                downPressed = false;
+                break;
+            case KeyEvent.VK_LEFT:
+                leftPressed = false;
+                break;
+            case KeyEvent.VK_RIGHT:
+                rightPressed = false;
+                break;
         }
     }
 

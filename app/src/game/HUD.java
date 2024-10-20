@@ -6,20 +6,44 @@ import java.awt.Graphics;
 
 public class HUD {
 
-    private final Player player;  // Marked as final since it’s not reassigned
+    private int health;
+    private int score;
 
-    public HUD(Player player) {
-        this.player = player;
+    public HUD() {
+        // Initial player stats
+        this.health = 100;
+        this.score = 0;
     }
 
-    // Render the HUD (health, score) on the screen
-    public void render(Graphics g) {
-        // Draw Health
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
-        g.drawString("Health: " + player.getHealth(), 20, 50);  // Health at the top-left corner
+    // Decrease health by a certain amount
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health < 0) health = 0;
+    }
 
-        // Draw Score
-        g.drawString("Score: " + player.getScore(), 20, 80);  // Score displayed below health
+    // Increase score by a certain amount
+    public void increaseScore(int points) {
+        score += points;
+    }
+
+    // Draw the HUD (health and score) on the screen
+    public void draw(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        
+        // Display Health
+        g.drawString("Health: " + health, 20, 40);
+        
+        // Display Score
+        g.drawString("Score: " + score, 20, 70);
+    }
+
+    // Getter methods for health and score
+    public int getHealth() {
+        return health;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

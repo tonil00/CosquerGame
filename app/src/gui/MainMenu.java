@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import game.CosquerGame;
+
 public class MainMenu extends JFrame {
 
     private final JButton startButton;
@@ -20,10 +22,11 @@ public class MainMenu extends JFrame {
 
     public MainMenu() {
         // Set up the frame
-        setTitle("Main Menu");
+        setTitle("Main Menu - Cosquer Cave Explorer");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
 
         // Set up the main panel
         JPanel panel = new JPanel();
@@ -40,19 +43,13 @@ public class MainMenu extends JFrame {
         customizeButton(settingsButton);
         customizeButton(exitButton);
 
-        // Add action listeners for button interactions using lambda expressions
+        // Add action listeners for button interactions
         startButton.addActionListener(e -> {
-            // Code to start the game
-            System.out.println("Start Game button clicked.");
-            // Transition to game screen or functionality
+            new CosquerGame();  // Opens the game window
+            dispose();  // Close the main menu window
         });
 
-        settingsButton.addActionListener(e -> {
-            // Code to open settings menu
-            System.out.println("Settings button clicked.");
-            // Open settings window
-        });
-
+        settingsButton.addActionListener(e -> System.out.println("Settings button clicked."));
         exitButton.addActionListener(e -> System.exit(0));
 
         // Add buttons to the panel
@@ -80,7 +77,6 @@ public class MainMenu extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Run the main menu
         SwingUtilities.invokeLater(() -> new MainMenu());
     }
 }

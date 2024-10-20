@@ -2,90 +2,123 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.List;
 
+/***
+ * Player class represents the player (fish) in the game.
+ */
 public class Player {
 
     private int x;
     private int y;
-    private final int width = 50;  // Player width
-    private final int height = 30;  // Player height
-    private int speedX;
-    private int speedY;
+    private int width;
+    private int height;
+    private double speedX;
+    private double speedY;
+    private double acceleration = 0.2;
+    private double deceleration = 0.1;
+    private double maxSpeed = 3.0;
 
-    private final int gameWidth;
-    private final int gameHeight;
-
-    // Constructor to spawn player with default position
-    public Player(int startX, int startY, int gameWidth, int gameHeight) {
+    /***
+     * Constructor to initialize the player's position.
+     */
+    public Player(int startX, int startY) {
         this.x = startX;
         this.y = startY;
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
+        this.width = 50;
+        this.height = 30;
         this.speedX = 0;
         this.speedY = 0;
     }
 
-    // Method to manually set player's position
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    // Method to get player height
-    public int getHeight() {
-        return height;
-    }
-
-    // Update the player's position and enforce screen boundary constraints
-    public void update() {
-        x += speedX;
-        y += speedY;
-
-        // Prevent player from going beyond the left edge
-        if (x < 0) {
-            x = 0;
-        }
-        // Prevent player from going beyond the right edge (subtracting player width)
-        if (x > gameWidth - (3*width)/2) {
-            x = gameWidth - (3*width)/2;
-        }
-        // Prevent player from going beyond the top edge
-        if (y < 0) {
-            y = 0;
-        }
-        // Prevent player from going beyond the bottom edge (subtracting player height)
-        if (y > gameHeight - 4*height) {
-            y = gameHeight - 4*height;
-        }
-    }
-
-    // Set player's speed based on user input
-    public void setSpeed(int speedX, int speedY) {
-        this.speedX = speedX;
-        this.speedY = speedY;
-    }
-
-    // Draw the player on the screen
+    /***
+     * Draw the player on the screen.
+     * 
+     * @param g The Graphics object used for drawing.
+     */
     public void draw(Graphics g) {
-        g.setColor(Color.RED);  // Make the player red for visibility
-        g.fillOval(x, y, width, height);  // Draw the player as a red oval
+        g.setColor(Color.YELLOW);
+        g.fillOval(x, y, width, height); // Draw fish as a yellow oval
     }
 
-    // Optional methods for health and score
-    public int getHealth() {
-        return 100;  // Default health
+    /***
+     * Update the player's position, apply acceleration or deceleration, and check for collisions.
+     */
+    public void update(boolean movingUp, boolean movingDown, boolean movingLeft, boolean movingRight, List<Obstacle> obstacles) {
+        // Adjust speed
+        if (movingLeft) {
+            speedX = Math.max(speedX - acceleration, -maxSpeed);
+        } else if (movingRight) {
+            speedX = Math.min(speedX + acceleration, maxSpeed);
+        } else {
+            speedX = (speedX > 0) ? Math.max(speedX - deceleration, 0) : Math.min(speedX + deceleration, 0);
+        }
+
+        if (movingUp) {
+            speedY = Math.max(speedY - acceleration, -maxSpeed);
+        } else if (movingDown) {
+            speedY = Math.min(speedY + acceleration, maxSpeed);
+        } else {
+            speedY = (speedY > 0) ? Math.max(speedY - deceleration, 0) : Math.min(speedY + deceleration, 0);
+        }
+
+        // Calculate potential new position
+        int nextX = x + (int) speedX;
+        int nextY = y + (int) speedY;
+
+        // Check for collisions
+        if (!isColliding(nextX, nextY, obstacles)) {
+            // Move the player if no collision detected
+            x = nextX;
+            y = nextY;
+        } else {
+            // Stop movement if a collision occurs
+            speedX = 0;
+            speedY = 0;
+        }
     }
 
-    public int getScore() {
-        return 0;  // Default score
+    /***
+     * Check if the player would collide with any obstacles at the given position.
+     * 
+     * @param nextX The player's next x position.
+     * @param nextY The player's next y position.
+     * @param obstacles List of obstacles to check collision against.
+     * @return True if a collision would occur, false otherwise.
+     */
+    private boolean isColliding(int nextX, int nextY, List<Obstacle> obstacles) {
+        Rectangle playerHitbox = new Rectangle(nextX, nextY, width, height);
+        for (Obstacle obstacle : obstacles) {
+            if (playerHitbox.intersects(obstacle.getHitbox())) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    // Get the x-coordinate of the player
+    /***
+     * Stop the player from moving immediately.
+     */
+    public void stopMoving() {
+        this.speedX = 0;
+        this.speedY = 0;
+    }
+
+    /***
+     * Get the x-coordinate of the player.
+     * 
+     * @return The x-coordinate of the player.
+     */
     public int getX() {
         return x;
     }
 
-    // Get the y-coordinate of the player
+    /***
+     * Get the y-coordinate of the player.
+     * 
+     * @return The y-coordinate of the player.
+     */
     public int getY() {
         return y;
     }
