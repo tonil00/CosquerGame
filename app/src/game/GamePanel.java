@@ -1,18 +1,19 @@
 package game;
 
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     // Timer to control the game loop
-    private Timer timer;
-    private Player player;
+    private final Timer timer;
+    private final Player player; // Can be final if not reassigned
     private final int playerSpeed = 5; // Movement speed
 
     // Track which keys are pressed
@@ -20,12 +21,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     public GamePanel() {
         this.setBackground(java.awt.Color.BLUE); // Set background to represent the sea
-        this.setFocusable(true);
-        this.addKeyListener(this); // Listen for key events
-
+        this.setFocusable(true); // Allow the panel to receive key events
+    
+        // Initialize the player and timer
         player = new Player(100, 100); // Create a new Player instance (the fish)
         timer = new Timer(30, this); // Timer for the game loop (30ms delay)
+    
+        // Set up the key listener after the constructor is fully executed
+        setupKeyListener();
     }
+    
+    private void setupKeyListener() {
+        this.addKeyListener(this); // Listen for key events
+    }
+    
 
     // Start the game loop
     public void startGame() {
@@ -54,18 +63,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         // Set flags when keys are pressed
         switch (keyCode) {
-            case KeyEvent.VK_UP:
-                upPressed = true;
-                break;
-            case KeyEvent.VK_DOWN:
-                downPressed = true;
-                break;
-            case KeyEvent.VK_LEFT:
-                leftPressed = true;
-                break;
-            case KeyEvent.VK_RIGHT:
-                rightPressed = true;
-                break;
+            case KeyEvent.VK_UP -> upPressed = true;
+            case KeyEvent.VK_DOWN -> downPressed = true;
+            case KeyEvent.VK_LEFT -> leftPressed = true;
+            case KeyEvent.VK_RIGHT -> rightPressed = true;
         }
 
         updatePlayerSpeed(); // Update fish movement when key is pressed
@@ -78,18 +79,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         // Reset flags when keys are released
         switch (keyCode) {
-            case KeyEvent.VK_UP:
-                upPressed = false;
-                break;
-            case KeyEvent.VK_DOWN:
-                downPressed = false;
-                break;
-            case KeyEvent.VK_LEFT:
-                leftPressed = false;
-                break;
-            case KeyEvent.VK_RIGHT:
-                rightPressed = false;
-                break;
+            case KeyEvent.VK_UP -> upPressed = false;
+            case KeyEvent.VK_DOWN -> downPressed = false;
+            case KeyEvent.VK_LEFT -> leftPressed = false;
+            case KeyEvent.VK_RIGHT -> rightPressed = false;
         }
 
         updatePlayerSpeed(); // Update fish movement when key is released
@@ -105,14 +98,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         int speedX = 0;
         int speedY = 0;
 
-        if (upPressed)
-            speedY = -playerSpeed;
-        if (downPressed)
-            speedY = playerSpeed;
-        if (leftPressed)
-            speedX = -playerSpeed;
-        if (rightPressed)
-            speedX = playerSpeed;
+        if (upPressed) speedY = -playerSpeed;
+        if (downPressed) speedY = playerSpeed;
+        if (leftPressed) speedX = -playerSpeed;
+        if (rightPressed) speedX = playerSpeed;
 
         // Set the fish's speed (handles diagonal movement automatically)
         player.setSpeed(speedX, speedY);
