@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /***
  * Player class represents the player (fish) in the game.
@@ -47,6 +48,9 @@ public class Player {
 
     /**
      * Set the speed of the player.
+     * 
+     * @param speedX The speed in the x direction.
+     * @param speedY The speed in the y direction.
      */
     public void setSpeed(int speedX, int speedY) {
         this.speedX = speedX;
@@ -77,5 +81,14 @@ public class Player {
      */
     public int getY() {
         return y;
+    }
+
+    /**
+     * Get the bounding box of the player for collision detection.
+     * 
+     * @return A Rectangle representing the player's bounds.
+     */
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 }
