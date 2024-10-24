@@ -2,7 +2,9 @@
 
 Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate as a fish through the mysterious, prehistoric Cosquer Cave! Encounter crabs, larger fish, and collect prehistoric paintings as you journey through this dark, underwater world.
 
-![Logo](./img/logo.png)
+<p align="center">
+    <img src="./img/logo.jpg" alt="Logo" width="50%">
+</p>
 
 ---
 
@@ -16,7 +18,7 @@ Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate
 
 Explore a virtual recreation of the real Cosquer Cave, a prehistoric underwater site near Marseille. Here's a glimpse of what the real cave looks like:
 
-![Cosquer Cave](./img/cosquer-cave-real.jpg)
+![Cosquer Cave](./img/section-view-of-the-cosquer-cave-.jpg)
 
 > *Image of the real Cosquer Cave from historical archives, showing its prehistoric paintings and underwater environment.*
 
