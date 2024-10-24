@@ -3,14 +3,10 @@ package game;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/***
- * Abstract Enemy class representing a generic enemy in the game.
- */
 public abstract class Enemy {
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
+
+    protected int x, y;
+    protected int width, height;
 
     public Enemy(int x, int y, int width, int height) {
         this.x = x;
@@ -19,11 +15,14 @@ public abstract class Enemy {
         this.height = height;
     }
 
-    public abstract void update(Player player);
+    // Abstract method for movement
+    public abstract void move();
 
-    public abstract void draw(Graphics g);
+    // Abstract method for drawing
+    public abstract void draw(Graphics g, int cameraX, int cameraY);
 
-    public Rectangle getHitbox() {
+    // Get the bounding box for collision detection
+    public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
 }

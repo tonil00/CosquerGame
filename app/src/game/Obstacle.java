@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/***
- * Obstacle represents static objects in the game that the player must avoid.
- */
 public class Obstacle {
 
-    private final int x, y, width, height;
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int height;
 
     public Obstacle(int x, int y, int width, int height) {
         this.x = x;
@@ -18,12 +18,12 @@ public class Obstacle {
         this.height = height;
     }
 
-    public void draw(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, y, width, height); // Draw obstacle as a dark gray rectangle
+    public void draw(Graphics g, int cameraX, int cameraY) {
+        g.setColor(Color.BLACK);
+        g.fillRect(x - cameraX, y - cameraY, width, height);
     }
 
-    public Rectangle getHitbox() {
+    public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
 }

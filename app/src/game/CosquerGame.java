@@ -1,27 +1,36 @@
 package game;
 
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-/***
- * CosquerGame is the main class that starts the game.
- */
 public class CosquerGame {
+    private JFrame window;
+    private GamePanel gamePanel;
+
+    public CosquerGame() {
+        window = new JFrame("Cosquer Cave Explorer");
+
+        // Set the window icon
+        URL iconURL = getClass().getResource("/../img/logo.jpg");
+        if (iconURL != null) {
+            ImageIcon icon = new ImageIcon(iconURL);
+            window.setIconImage(icon.getImage());
+        }
+
+        gamePanel = new GamePanel(1200, 1200); // Set large map size
+
+        window.add(gamePanel);
+        window.pack();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.setVisible(true);
+
+        gamePanel.startGameThread(); // Starting the game loop
+    }
 
     public static void main(String[] args) {
-
-        JFrame frame = new JFrame("Cosquer Cave Explorer");
-        GamePanel gamePanel = new GamePanel();
-        frame.add(gamePanel);
-        ImageIcon icon = new ImageIcon("../img/logo.jpg");
-        frame.setIconImage(icon.getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null); // Center the frame on the screen
-        frame.setVisible(true);
-
-        // Start the game loop
-        gamePanel.startGame();
+        new CosquerGame();
     }
 }

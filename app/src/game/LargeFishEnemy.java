@@ -2,47 +2,43 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.util.Random;
 
-/***
- * LargeFishEnemy represents a larger enemy that swims at random angles and bounces off walls.
- */
 public class LargeFishEnemy extends Enemy {
 
-    private double speedX;
-    private double speedY;
-    private final int width;
-    private final int height;
+    private final Random random = new Random();
+    private double velocityX;
+    private double velocityY;
+    private final double maxSpeed = 4;
+    private final double bounceFactor = 1.1;
 
     public LargeFishEnemy(int startX, int startY) {
-        super(startX, startY, 70, 40); // Ensuring constructor matches superclass constructor
-        this.width = 70;
-        this.height = 40;
-        this.speedX = 2 * (Math.random() > 0.5 ? 1 : -1);
-        this.speedY = 2 * (Math.random() > 0.5 ? 1 : -1);
+        super(startX, startY, 60, 30);  // Using the constructor from Enemy class
+
+        velocityX = (random.nextBoolean() ? 1 : -1) * (random.nextDouble() * maxSpeed);
+        velocityY = (random.nextBoolean() ? 1 : -1) * (random.nextDouble() * maxSpeed);
     }
 
     @Override
-    public void update(Player player) {
-        x += speedX;
-        y += speedY;
+    public void move() {
+        x += velocityX;
+        y += velocityY;
 
-        if (x <= 0 || x + width >= 5000) {
-            speedX *= -1;
+        // Bounce off the map boundaries
+        if (x < 50 || x > 4500) {
+            velocityX = -velocityX * bounceFactor;
         }
-        if (y <= 50 || y + height >= 3000) {
-            speedY *= -1;
+        if (y < 50 || y > 2950) {
+            velocityY = -velocityY * bounceFactor;
         }
+
+        velocityX = Math.max(-maxSpeed, Math.min(maxSpeed, velocityX));
+        velocityY = Math.max(-maxSpeed, Math.min(maxSpeed, velocityY));
     }
 
     @Override
-    public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, width, height);
-    }
-
-    @Override
-    public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
+    public void draw(Graphics g, int cameraX, int cameraY) {
+        g.setColor(Color.CYAN);
+        g.fillOval(x - cameraX, y - cameraY, width, height);
     }
 }

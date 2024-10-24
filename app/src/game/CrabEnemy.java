@@ -2,43 +2,42 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
-/***
- * CrabEnemy represents a crab enemy that moves horizontally back and forth.
- */
 public class CrabEnemy extends Enemy {
 
     private int direction = 1;
-    private int movedDistance = 0;
-    private final int width;
-    private final int height;
+    private int jumpCounter = 0;
+    private final int jumpHeight = 20;
+    private final int jumpDuration = 60;
+    private double velocityX = 0;
+    private final double maxSpeed = 2;
+    private final double acceleration = 0.5;
 
     public CrabEnemy(int startX, int startY) {
-        super(startX, startY, 40, 20); // Ensuring constructor matches superclass constructor
-        this.width = 40;
-        this.height = 20;
+        super(startX, startY, 30, 20);  // Using the constructor from Enemy class
     }
 
     @Override
-    public void update(Player player) {
-        x += direction * 2;
-        movedDistance += 2;
+    public void move() {
+        // Movement logic for moving side to side
+        if (x < 50) direction = 1;
+        if (x > 4500) direction = -1;
+        velocityX += acceleration * direction;
+        velocityX = Math.max(-maxSpeed, Math.min(maxSpeed, velocityX));
+        x += velocityX;
 
-        if (movedDistance >= 100) {
-            direction *= -1;
-            movedDistance = 0;
+        // Jump logic
+        jumpCounter++;
+        if (jumpCounter % jumpDuration < jumpDuration / 2) {
+            y -= jumpHeight;
+        } else {
+            y += jumpHeight;
         }
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int cameraX, int cameraY) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
-    }
-
-    @Override
-    public Rectangle getHitbox() {
-        return new Rectangle(x, y, width, height);
+        g.fillRect(x - cameraX, y - cameraY, width, height);
     }
 }
