@@ -41,7 +41,7 @@ application {
 sourceSets {
     main {
         java {
-            srcDirs = ['src/game'] // Custom source directory for Java files
+            srcDirs = ['src'] // Custom source directory for Java files
         }
         resources {
             srcDirs = ['src/assets'] // Custom directory for resources (images, sounds, etc.)

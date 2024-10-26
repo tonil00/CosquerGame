@@ -33,23 +33,17 @@ public class Camera {
      * @param playerY The player's y-coordinate.
      */
     public void update(int playerX, int playerY) {
-        // Center the camera on the player
-        x = playerX - screenWidth / 2;
-        y = playerY - screenHeight / 2;
+        // Desired camera position to center on the player
+        int targetX = playerX - screenWidth / 2;
+        int targetY = playerY - screenHeight / 2;
+
+        // Smoothly move towards the target position
+        x += (targetX - x) * 0.1; // Adjust the factor for smoothing
+        y += (targetY - y) * 0.1;
 
         // Keep the camera within the world bounds
-        if (x < 0) { // Left edge
-            x = 0;
-        }
-        if (y < 0) { // Top edge
-            y = 0;
-        }
-        if (x + screenWidth > worldWidth) { // Right edge
-            x = worldWidth - screenWidth;
-        }
-        if (y + screenHeight > worldHeight) { // Bottom edge
-            y = worldHeight - screenHeight;
-        }
+        x = Math.max(0, Math.min(x, worldWidth - screenWidth));
+        y = Math.max(0, Math.min(y, worldHeight - screenHeight));
     }
 
     // Getters for camera position
@@ -59,5 +53,13 @@ public class Camera {
 
     public int getY() {
         return y;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
     }
 }
