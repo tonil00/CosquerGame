@@ -14,6 +14,9 @@ public class CosquerGame {
         // Set the window size
         window.setSize(800, 600);
 
+        // Prevent the window from being resized
+        window.setResizable(false);
+
         // Close the application when the window is closed
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -29,7 +32,7 @@ public class CosquerGame {
         bgMusic.loop(); // Loop the music continuously
 
         gamePanel.setBackgroundMusic(bgMusic);
-        
+
         // Start the game loop (this can be inside the game panel or another class)
         gamePanel.startGame();
     }
