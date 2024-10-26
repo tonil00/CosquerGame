@@ -8,6 +8,7 @@ public class Camera {
     private int worldHeight;
     private int screenWidth;
     private int screenHeight;
+    private final double zoom;
 
     /**
      * Constructor for the camera.
@@ -24,6 +25,7 @@ public class Camera {
         this.screenHeight = screenHeight;
         this.x = 0;
         this.y = 0;
+        this.zoom = 2.0; // Adjust the zoom factor
     }
 
     /**
@@ -33,17 +35,23 @@ public class Camera {
      * @param playerY The player's y-coordinate.
      */
     public void update(int playerX, int playerY) {
+        // Calculate the viewport size based on zoom
+        int viewportWidth = (int) (screenWidth / zoom);
+        int viewportHeight = (int) (screenHeight / zoom);
+
         // Desired camera position to center on the player
-        int targetX = playerX - screenWidth / 2;
-        int targetY = playerY - screenHeight / 2;
+        int targetX = playerX - viewportWidth / 2 + 16; // Adjust for player width
+        int targetY = playerY - viewportHeight / 2 + 16; // Adjust for player height
 
         // Smoothly move towards the target position
         x += (targetX - x) * 0.1; // Adjust the factor for smoothing
         y += (targetY - y) * 0.1;
 
         // Keep the camera within the world bounds
-        x = Math.max(0, Math.min(x, worldWidth - screenWidth));
-        y = Math.max(0, Math.min(y, worldHeight - screenHeight));
+        x = Math.max(0, Math.min(x, worldWidth - viewportWidth));
+        y = Math.max(0, Math.min(y, worldHeight - viewportHeight));
+
+        
     }
 
     // Getters for camera position
@@ -53,6 +61,10 @@ public class Camera {
 
     public int getY() {
         return y;
+    }
+
+    public int getZoom() {
+        return (int) zoom;
     }
 
     public int getScreenWidth() {

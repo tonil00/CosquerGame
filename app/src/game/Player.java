@@ -1,6 +1,6 @@
 package game;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -51,11 +51,9 @@ public class Player {
      * 
      * @param g The Graphics object used for drawing.
      */
-    public void draw(Graphics g, Camera camera) {
+    public void draw(Graphics2D g) {
         if (playerImage != null) {
-            int drawX = getX() - camera.getX();
-            int drawY = getY() - camera.getY();
-            g.drawImage(playerImage, drawX, drawY, width, height, null);
+            g.drawImage(playerImage, x, y, width, height, null);
         }
     }
 

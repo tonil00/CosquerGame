@@ -24,6 +24,12 @@ public class CosquerGame {
         // Make the window visible
         window.setVisible(true);
 
+        // Play background music
+        AudioPlayer bgMusic = new AudioPlayer("/sounds/background_music.wav");
+        bgMusic.loop(); // Loop the music continuously
+
+        gamePanel.setBackgroundMusic(bgMusic);
+        
         // Start the game loop (this can be inside the game panel or another class)
         gamePanel.startGame();
     }
