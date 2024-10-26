@@ -21,7 +21,7 @@ public class HeartBar {
     public HeartBar(int maxHearts) {
         this.maxHearts = maxHearts;
         this.currentHearts = maxHearts;
-        this.heartWidth = 32;  // Adjust based on your image size
+        this.heartWidth = 32; // Adjust based on your image size
         this.heartHeight = 32; // Adjust based on your image size
 
         // Load heart images
@@ -74,5 +74,13 @@ public class HeartBar {
      */
     public int getCurrentHearts() {
         return currentHearts;
+    }
+
+    public boolean isEmpty() {
+        return currentHearts <= 0;
+    }
+
+    public void reset() {
+        currentHearts = maxHearts;
     }
 }

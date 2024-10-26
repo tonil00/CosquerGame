@@ -80,7 +80,8 @@ public class Renderer {
                 // Calculate the distance from the player to the current block center
                 int blockCenterX = x + blockSize / 2;
                 int blockCenterY = y + blockSize / 2;
-                double distanceToPlayer = Math.hypot(playerScreenX - blockCenterX, playerScreenY - blockCenterY);
+                double distanceToPlayer = Math.hypot(playerScreenX - blockCenterX,
+                        playerScreenY - blockCenterY);
 
                 // Define the maximum distance for light to fade out
                 int maxDistance = 450;
@@ -90,7 +91,7 @@ public class Renderer {
                 alpha = Math.max(0.2f, alpha); // Ensure some minimum visibility for aesthetics
 
                 // Set the color with the calculated alpha
-                g2d.setColor(new Color(0, 0, 0, alpha - 0.001f));
+                g2d.setColor(new Color(0, 0, 0.1f, alpha - 0.001f));
 
                 // Draw the block
                 g2d.fillRect(x, y, blockSize, blockSize);

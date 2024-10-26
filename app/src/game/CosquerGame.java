@@ -31,6 +31,10 @@ public class CosquerGame {
         AudioPlayer bgMusic = new AudioPlayer("/sounds/background_music.wav");
         bgMusic.loop(); // Loop the music continuously
 
+        // Play background underwater sounds
+        AudioPlayer bgUnderWaterMusic = new AudioPlayer("/sounds/background_underwater.wav");
+        bgUnderWaterMusic.loop(); // Loop the music continuously
+
         gamePanel.setBackgroundMusic(bgMusic);
 
         // Start the game loop (this can be inside the game panel or another class)

@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
@@ -17,16 +18,16 @@ public class Enemy {
     /**
      * Constructor to initialize the enemy's position and movement.
      *
-     * @param startX  The starting x-coordinate.
-     * @param startY  The starting y-coordinate.
-     * @param speedX  The horizontal speed of the enemy.
+     * @param startX The starting x-coordinate.
+     * @param startY The starting y-coordinate.
+     * @param speedX The horizontal speed of the enemy.
      */
     public Enemy(int startX, int startY, int speedX) {
         this.x = startX;
         this.y = startY;
         this.speedX = speedX;
-        this.width = 36;  // Adjust as needed
-        this.height = 36; // Adjust as needed
+        this.width = 20; // Adjust as needed
+        this.height = 20; // Adjust as needed
 
         // Load the enemy image
         try {
@@ -40,6 +41,15 @@ public class Enemy {
             e.printStackTrace();
             System.out.println("Error loading enemy sprite image.");
         }
+    }
+
+    public Enemy(Enemy enemy) {
+        this.x = enemy.x;
+        this.y = enemy.y;
+        this.width = enemy.width;
+        this.height = enemy.height;
+        this.speedX = enemy.speedX;
+        this.enemyImage = enemy.enemyImage;
     }
 
     /**
@@ -70,8 +80,8 @@ public class Enemy {
      *
      * @return The bounding rectangle of the enemy.
      */
-    public java.awt.Rectangle getBounds() {
-        return new java.awt.Rectangle(x, y, width, height);
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 
     // Getters for position
