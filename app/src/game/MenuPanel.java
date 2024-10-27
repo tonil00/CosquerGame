@@ -25,7 +25,7 @@ public class MenuPanel implements MouseListener {
     public MenuPanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.backgroundImage = loadImage("/images/menu_background.png");
-        this.playButton = new Button(0, 0, 200, 80, "Play");
+        this.playButton = new Button(0, 0, 200, 80, "/images/button_play.png");
     }
 
     private Image loadImage(String path) {

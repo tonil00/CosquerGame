@@ -1,38 +1,47 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
- * The Button class represents a clickable button in the game.
- * It can be drawn on the screen and can detect mouse clicks.
+ * Represents a clickable button in the game.
  */
 public class Button {
     private int x;
     private int y;
     private int width;
     private int height;
-    private String text;
     private Rectangle bounds;
+    private Image buttonImage;
 
     /**
      * Constructs a new Button with the specified position, size, and text.
+     * Loads an image to use as the button background.
      *
-     * @param x the x-coordinate of the button
-     * @param y the y-coordinate of the button
-     * @param width the width of the button
-     * @param height the height of the button
-     * @param text the text to display on the button
+     * @param x         the x-coordinate of the button
+     * @param y         the y-coordinate of the button
+     * @param width     the width of the button
+     * @param height    the height of the button
+     * @param imagePath the path to the button image
      */
-    public Button(int x, int y, int width, int height, String text) {
+    public Button(int x, int y, int width, int height, String imagePath) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.text = text;
         bounds = new Rectangle(x, y, width, height);
+
+        // Load button image
+        try {
+            buttonImage = ImageIO.read(getClass().getResourceAsStream(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading button image.");
+        }
     }
 
     /**
@@ -41,21 +50,11 @@ public class Button {
      * @param g2d the Graphics2D object used for drawing
      */
     public void draw(Graphics2D g2d) {
-        // Draw button rectangle
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(x, y, width, height);
-
-        // Draw button border
-        g2d.setColor(Color.BLACK);
-        g2d.drawRect(x, y, width, height);
+        // Draw button image or rectangle if image is not available
+        g2d.drawImage(buttonImage, x, y, width, height, null);
 
         // Draw text
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 36));
-        int textWidth = g2d.getFontMetrics().stringWidth(text);
-        int textX = x + (width - textWidth) / 2;
-        int textY = y + (height + g2d.getFontMetrics().getAscent()) / 2 - 10;
-        g2d.drawString(text, textX, textY);
     }
 
     public boolean isClicked(int mouseX, int mouseY) {

@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener {
         paintingManager = new PaintingManager();
         bubbles = new ArrayList<>();
         winningFont = new Font("Arial", Font.BOLD, 36);
-        closeButton = new Button(0, 0, 200, 80, "Close");
+        closeButton = new Button(0, 0, 200, 80, "/images/button_play.png");
 
         long hitCooldown = 1000; // Example cooldown in milliseconds
         collisionManager = new CollisionManager(
