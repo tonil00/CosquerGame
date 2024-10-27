@@ -1,5 +1,8 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.*;
@@ -8,8 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import org.checkerframework.checker.units.qual.s;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePanel extends JPanel implements ActionListener, MouseListener {
     private Timer timer;
@@ -24,11 +27,15 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
     private AudioPlayer bgMusic;
     private PlayerController playerController;
     private EnemyManager enemyManager;
+    private PaintingManager paintingManager;
     private Renderer renderer;
     private AudioPlayer collisionSound;
     private AudioPlayer deathSound;
     private GameState gameState;
     private MenuPanel menuPanel;
+    private Button closeButton;
+    private List<Bubble> bubbles;
+    private Font winningFont;
 
     public GamePanel() {
         this.setFocusable(true);
@@ -86,9 +93,21 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         // Initialize Renderer
         renderer = new Renderer(this);
 
+        // Initialize collectible paintings
+        paintingManager = new PaintingManager();
+
         // Initialize menu panel
         menuPanel = new MenuPanel(this);
         this.addMouseListener(menuPanel); // Add mouse listener for menu interactions
+
+        // Initialize the close button
+        closeButton = new Button(0, 0, 200, 80, "Close");
+
+        // Initialize bubbles list
+        bubbles = new ArrayList<>();
+
+        // Initialize font for the winning message
+        winningFont = new Font("Arial", Font.BOLD, 36);
     }
 
     public void startGame() {
@@ -101,7 +120,12 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
         heartBar.reset();
         enemyManager.resetEnemies();
         collisionManager.reset();
+        bubbles.clear();
         gameState = GameState.PLAYING;
+        timer.start();
+        if (bgMusic != null) {
+            bgMusic.play();
+        }
         // Ensure focus is on GamePanel to receive key events
         this.requestFocusInWindow();
     }
@@ -114,6 +138,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
             menuPanel.draw((Graphics2D) g);
         } else if (gameState == GameState.PLAYING) {
             renderer.render((Graphics2D) g);
+        } else if (gameState == GameState.WINNING) {
+            renderer.render((Graphics2D) g);
+            drawWinningOverlay((Graphics2D) g);
         }
     }
 
@@ -124,8 +151,10 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
             player.update();
 
             enemyManager.update();
-
             collisionManager.checkCollisions();
+
+            // Update collectibles
+            paintingManager.update(player);
 
             // Check if player is dead
             if (heartBar.isEmpty()) {
@@ -134,6 +163,16 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
             }
 
             camera.update(player.getX(), player.getY());
+
+            if (paintingManager.allPaintingsCollected()) {
+                // Pause the game logic
+                if (bgMusic != null) {
+                    bgMusic.stop();
+                }
+                gameState = GameState.WINNING;
+            }
+        } else if (gameState == GameState.WINNING) {
+            updateBubbles();
         }
 
         repaint();
@@ -150,6 +189,56 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
         // Draw the mute button
         muteButton.draw(g2d);
+
+        // Display collected paintings count
+        String scoreText = paintingManager.getCollectedCount() + "/" + paintingManager.getTotalPaintings();
+        g2d.setColor(java.awt.Color.yellow);
+        g2d.setFont(new Font("Arial", Font.BOLD, 20));
+        int textWidth = g2d.getFontMetrics().stringWidth(scoreText);
+        g2d.drawString(scoreText, (getWidth() - textWidth) / 2, 30);
+    }
+
+    private void drawWinningOverlay(Graphics2D g2d) {
+        // Draw translucent overlay
+        g2d.setColor(new Color(0, 0, 0, 150)); // Semi-transparent black
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+
+        // Draw bubble animations
+        drawBubbles(g2d);
+
+        // Draw winning message
+        String message = "Congratulations! You collected all the paintings!";
+        g2d.setFont(winningFont);
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(message);
+        int textX = (getWidth() - textWidth) / 2;
+        int textY = getHeight() / 2;
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(message, textX, textY);
+
+        // Draw close button
+        int buttonX = (getWidth() - closeButton.getWidth()) / 2;
+        int buttonY = textY + 50; // Position below the message
+        closeButton.setPosition(buttonX, buttonY);
+        closeButton.draw(g2d);
+    }
+
+    private void updateBubbles() {
+        // Limit the number of bubbles at any given time
+        if (bubbles.size() < 20) { // Max 20 bubbles for visual effect
+            bubbles.add(new Bubble(getWidth(), getHeight()));
+        }
+
+        // Update existing bubbles
+        for (Bubble bubble : bubbles) {
+            bubble.update();
+        }
+    }
+
+    private void drawBubbles(Graphics2D g2d) {
+        for (Bubble bubble : bubbles) {
+            bubble.draw(g2d);
+        }
     }
 
     @Override
@@ -171,6 +260,13 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
                         bgMusic.play();
                     }
                 }
+            }
+        } else if (gameState == GameState.WINNING) {
+            int mouseX = e.getX();
+            int mouseY = e.getY();
+
+            if (closeButton.isClicked(mouseX, mouseY)) {
+                System.exit(0); // Close the game
             }
         }
     }
@@ -231,5 +327,9 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
     public void stopGame() {
         timer.stop();
+    }
+
+    public PaintingManager getPaintingManager() {
+        return paintingManager;
     }
 }

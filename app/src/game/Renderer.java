@@ -41,6 +41,9 @@ public class Renderer {
         // Draw the enemies
         drawEnemies(g2d);
 
+        // Draw collectibles (paintings)
+        drawPaintings(g2d);
+
         // Restore the original transform to work in screen coordinates
         g2d.setTransform(originalTransform);
 
@@ -66,10 +69,16 @@ public class Renderer {
         gamePanel.getEnemyManager().draw(g2d);
     }
 
+    private void drawPaintings(Graphics2D g2d) {
+        gamePanel.getPaintingManager().draw(g2d);
+    }
+
     private void drawDarknessOverlay(Graphics2D g2d, double zoom) {
         // Calculate player's position on screen
-        int playerScreenX = (int) ((gamePanel.getPlayer().getX() - gamePanel.getCamera().getX()) * zoom + 32);
-        int playerScreenY = (int) ((gamePanel.getPlayer().getY() - gamePanel.getCamera().getY()) * zoom + 32);
+        int playerScreenX = (int) ((gamePanel.getPlayer().getX() - gamePanel.getCamera().getX())
+                * zoom + 32);
+        int playerScreenY = (int) ((gamePanel.getPlayer().getY() - gamePanel.getCamera().getY())
+                * zoom + 32);
 
         // Define block size for pixelation effect
         int blockSize = 8; // Adjust block size to match the scale of your pixel art
