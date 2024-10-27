@@ -10,5 +10,8 @@
 gradle run
 ```
 ## Or use the prebuild .jar file
-It is located in /build/libs
+```bash
+java -jar ./app/build/libs/CosquerGame-1.0.jar
+```
 
+In both cases ensure you are in the project folder.
