@@ -17,7 +17,7 @@ public class CollisionManager {
         this.player = player;
         this.enemyManager = enemyManager;
         this.heartBar = heartBar;
-        this.collisionSound = collisionSound;
+        this.collisionSound = new AudioPlayer("/sounds/hit.wav");
         this.hitCooldown = hitCooldown;
         this.lastHitTime = 0;
     }

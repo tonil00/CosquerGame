@@ -11,6 +11,16 @@ public class EnemyManager {
     public EnemyManager() {
         enemies = new ArrayList<>();
         initialEnemies = new ArrayList<>();
+
+        // Add initial enemies to both lists
+        Enemy enemy1 = new Enemy(200, 400, 2);
+        Enemy enemy2 = new Enemy(600, 300, -2);
+
+        enemies.add(enemy1);
+        enemies.add(enemy2);
+
+        initialEnemies.add(enemy1);
+        initialEnemies.add(enemy2);
     }
 
     public void addEnemy(Enemy enemy) {
@@ -37,7 +47,7 @@ public class EnemyManager {
     public void resetEnemies() {
         enemies.clear();
         for (Enemy enemy : initialEnemies) {
-            enemies.add(new Enemy(enemy)); // Add fresh copies of initial enemies
+            enemies.add(new Enemy(enemy));
         }
     }
 }

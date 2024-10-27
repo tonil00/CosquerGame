@@ -54,4 +54,10 @@ public class PaintingManager {
     public boolean allPaintingsCollected() {
         return getCollectedCount() == totalPaintings;
     }
+
+    public void reset() {
+        for (Painting painting : paintings) {
+            painting.reset();
+        }
+    }
 }

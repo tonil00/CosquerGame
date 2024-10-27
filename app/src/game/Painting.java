@@ -44,4 +44,8 @@ public class Painting {
     public void collect() {
         collected = true;
     }
+
+    public void reset() {
+        collected = false;
+    }
 }

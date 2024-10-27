@@ -15,17 +15,16 @@ public class MenuPanel implements MouseListener {
 
     public MenuPanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        loadResources();
-
-        playButton = new Button(0, 0, 200, 80, "Play");
+        this.backgroundImage = loadImage("/images/menu_background.png");
+        this.playButton = new Button(0, 0, 200, 80, "Play");
     }
 
-    private void loadResources() {
+    private Image loadImage(String path) {
         try {
-            backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/menu_background.png"));
+            return ImageIO.read(getClass().getResourceAsStream(path));
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading menu background image.");
+            System.err.println("Error loading image: " + path);
+            return null;
         }
     }
 
@@ -57,8 +56,19 @@ public class MenuPanel implements MouseListener {
     }
 
     // Other MouseListener methods (empty implementations)
-    @Override public void mousePressed(MouseEvent e) { }
-    @Override public void mouseReleased(MouseEvent e) { }
-    @Override public void mouseEntered(MouseEvent e) { }
-    @Override public void mouseExited(MouseEvent e) { }
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 }
