@@ -11,6 +11,7 @@ public class UIDrawer {
     private MuteButton muteButton;
     private PaintingManager paintingManager;
     private Font uiFont = new Font("Arial", Font.BOLD, 20);
+    private Text text = new Text();
 
     /**
      * Constructs a UIDrawer with the specified HeartBar, MuteButton, and PaintingManager.
@@ -40,10 +41,7 @@ public class UIDrawer {
         muteButton.draw(g2d);
 
         String scoreText = paintingManager.getCollectedCount()
-                + "/" + paintingManager.getTotalPaintings();
-        g2d.setColor(Color.YELLOW);
-        g2d.setFont(uiFont);
-        int textWidth = g2d.getFontMetrics().stringWidth(scoreText);
-        g2d.drawString(scoreText, (panelWidth - textWidth) / 2, 30);
+                + " out of " + paintingManager.getTotalPaintings();
+        text.drawText(g2d, scoreText, 300, 40);
     }
 }

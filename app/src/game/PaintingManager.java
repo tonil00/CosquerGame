@@ -21,11 +21,11 @@ public class PaintingManager {
     }
 
     private void initializePaintings() {
-        paintings.add(new Painting(100, 200, "/images/painting1.png"));
-        paintings.add(new Painting(300, 400, "/images/painting2.png"));
-        // paintings.add(new Painting(500, 150, "/images/painting3.png"));
-        // paintings.add(new Painting(700, 300, "/images/painting4.png"));
-        // paintings.add(new Painting(200, 500, "/images/painting5.png"));
+        paintings.add(new Painting(564, 120, "/images/painting1.png"));
+        paintings.add(new Painting(734, 932, "/images/painting2.png"));
+        paintings.add(new Painting(528, 908, "/images/painting3.png"));
+        paintings.add(new Painting(524, 608, "/images/painting4.png"));
+        paintings.add(new Painting(96, 872, "/images/painting5.png"));
     }
 
     /**

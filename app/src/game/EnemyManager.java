@@ -20,14 +20,26 @@ public class EnemyManager {
         initialEnemies = new ArrayList<>();
 
         // Add initial enemies to both lists
-        Enemy enemy1 = new Enemy(200, 400, 2);
-        Enemy enemy2 = new Enemy(600, 300, -2);
+        Enemy enemy1 = new Enemy(200, 100, 2);
+        Enemy enemy2 = new Enemy(600, 210, -2);
+        Enemy enemy3 = new Enemy(100, 340, 3);
+        Enemy enemy4 = new Enemy(800, 540, -3);
+        Enemy enemy5 = new Enemy(300, 620, -1);
+        Enemy enemy6 = new Enemy(1000, 800, 1);
 
         enemies.add(enemy1);
         enemies.add(enemy2);
+        enemies.add(enemy3);
+        enemies.add(enemy4);
+        enemies.add(enemy5);
+        enemies.add(enemy6);
 
         initialEnemies.add(enemy1);
         initialEnemies.add(enemy2);
+        initialEnemies.add(enemy3);
+        initialEnemies.add(enemy4);
+        initialEnemies.add(enemy5);
+        initialEnemies.add(enemy6);
     }
 
     /**

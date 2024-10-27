@@ -66,8 +66,7 @@ public class Enemy {
     public void update() {
         x += speedX;
 
-        // Example movement: Reverse direction at specific x-coordinates
-        if (x <= 100 || x + width >= 700) {
+        if (x <= 0 || x + width >= 1024) {
             speedX = -speedX; // Reverse direction
         }
     }

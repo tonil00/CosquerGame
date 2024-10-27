@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Button closeButton;
     private List<Bubble> bubbles;
     private Font winningFont;
+    private Text congratulationsText;
 
     /**
      * Constructs a new GamePanel, initializes game state, components, resources,
@@ -64,8 +65,8 @@ public class GamePanel extends JPanel implements ActionListener {
         enemyManager = new EnemyManager();
         paintingManager = new PaintingManager();
         bubbles = new ArrayList<>();
-        winningFont = new Font("Arial", Font.BOLD, 36);
-        closeButton = new Button(0, 0, 200, 80, "/images/button_play.png");
+        closeButton = new Button(320, 380, 200, 80, "/images/button_exit.png");
+        congratulationsText = new Text();
 
         long hitCooldown = 1000; // Example cooldown in milliseconds
         collisionManager = new CollisionManager(
@@ -193,18 +194,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
         drawBubbles(g2d);
 
-        String message = "Congratulations! You collected all the paintings!";
-        g2d.setFont(winningFont);
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(message);
-        int textX = (getWidth() - textWidth) / 2;
-        int textY = getHeight() / 2;
-        g2d.setColor(Color.WHITE);
-        g2d.drawString(message, textX, textY);
+        congratulationsText.drawText(g2d, "Congratulations!", 250, 220);
+        congratulationsText.drawText(g2d, "You collected all the paintings!", 90, 300);
 
-        int buttonX = (getWidth() - closeButton.getWidth()) / 2;
-        int buttonY = textY + 50;
-        closeButton.setPosition(buttonX, buttonY);
         closeButton.draw(g2d);
     }
 

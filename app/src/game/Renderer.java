@@ -6,7 +6,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
 /**
- * The Renderer class is responsible for rendering the game elements such as the map, player, enemies, and UI.
+ * The Renderer class is responsible for rendering the game elements such as the
+ * map, player, enemies, and UI.
  */
 public class Renderer {
     private GamePanel gamePanel;
@@ -39,14 +40,14 @@ public class Renderer {
         // Draw the map
         drawMap(g2d);
 
+        // Draw collectibles (paintings)
+        drawPaintings(g2d);
+
         // Draw the player
         drawPlayer(g2d);
 
         // Draw the enemies
         drawEnemies(g2d);
-
-        // Draw collectibles (paintings)
-        drawPaintings(g2d);
 
         // Restore the original transform to work in screen coordinates
         g2d.setTransform(originalTransform);

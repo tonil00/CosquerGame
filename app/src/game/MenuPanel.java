@@ -15,7 +15,7 @@ public class MenuPanel implements MouseListener {
     private GamePanel gamePanel;
     private Image backgroundImage;
     private Button playButton;
-    private boolean buttonPositionSet = false;
+    private Text titleText;
 
     /**
      * Constructs a MenuPanel with the specified GamePanel.
@@ -25,7 +25,8 @@ public class MenuPanel implements MouseListener {
     public MenuPanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.backgroundImage = loadImage("/images/menu_background.png");
-        this.playButton = new Button(0, 0, 200, 80, "/images/button_play.png");
+        this.playButton = new Button(320, 380, 200, 80, "/images/button_play.png");
+        this.titleText = new Text();
     }
 
     private Image loadImage(String path) {
@@ -46,13 +47,10 @@ public class MenuPanel implements MouseListener {
         // Draw background
         g2d.drawImage(backgroundImage, 0, 0, gamePanel.getWidth(), gamePanel.getHeight(), null);
 
-        // Set the button position if it hasn't been set yet
-        if (!buttonPositionSet) {
-            int buttonX = (gamePanel.getWidth() - playButton.getWidth()) / 2;
-            int buttonY = (gamePanel.getHeight() - playButton.getHeight()) / 2;
-            playButton.setPosition(buttonX, buttonY);
-            buttonPositionSet = true; // Mark the position as set
-        }
+        // Draw title text
+        titleText.drawText(g2d, "Collect all the paintings,", 70, 200);
+        titleText.drawText(g2d, "and awoid the jellyfish.", 70, 250);
+        titleText.drawText(g2d, "Use the arrow keys to move the fish.", 70, 300);
 
         // Draw the play button
         playButton.draw(g2d);

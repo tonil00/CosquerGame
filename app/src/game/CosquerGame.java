@@ -1,5 +1,9 @@
 package game;
 
+import java.awt.Image;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 /**
@@ -19,6 +23,15 @@ public class CosquerGame {
 
         // Close the application when the window is closed
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        try {
+            Image iconImage = ImageIO.read(
+                    CosquerGame.class.getResourceAsStream("/images/fish.png"));
+            window.setIconImage(iconImage); // Set the icon for the JFrame
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading icon image.");
+        }
 
         // Add the game panel (the part that handles game rendering)
         GamePanel gamePanel = new GamePanel();

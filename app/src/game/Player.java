@@ -54,7 +54,11 @@ public class Player {
      */
     public void draw(Graphics2D g) {
         if (playerImage != null) {
-            g.drawImage(playerImage, x, y, width, height, null);
+            if (speedX < 0) {
+                g.drawImage(playerImage, x + width, y, -width, height, null);
+            } else {
+                g.drawImage(playerImage, x, y, width, height, null);
+            }
         }
     }
 
