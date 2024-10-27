@@ -15,8 +15,8 @@ public class Player {
     private int y;
     private int width;
     private int height;
-    private int speedX;
-    private int speedY;
+    private double speedX;
+    private double speedY;
     private Image playerImage;
     private CollisionMaskGenerator collisionMaskGenerator;
 
@@ -28,8 +28,8 @@ public class Player {
         this.y = startY;
         this.width = 36;
         this.height = 36;
-        this.speedX = 0;
-        this.speedY = 0;
+        this.speedX = 0.0;
+        this.speedY = 0.0;
 
         // Load the image and create the collision mask
         try {
@@ -72,7 +72,7 @@ public class Player {
      * @param speedX The speed in the x direction.
      * @param speedY The speed in the y direction.
      */
-    public void setSpeed(int speedX, int speedY) {
+    public void setSpeed(double speedX, double speedY) {
         this.speedX = speedX;
         this.speedY = speedY;
     }

@@ -14,6 +14,10 @@ public class PlayerController implements KeyListener {
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
+    private double speedX, speedY;
+    private double acceleration = 0.3;
+    private double deceleration = 0.1;
+    private double maxSpeed = 3.0;
 
     /**
      * Constructs a PlayerController with the specified player, collision mask, and player speed.
@@ -32,32 +36,44 @@ public class PlayerController implements KeyListener {
      * Updates the player's speed based on the current key presses.
      */
     public void updatePlayerSpeed() {
-        int speedX = 0;
-        int speedY = 0;
-
         int nextX = player.getX();
         int nextY = player.getY();
-
+    
+        // Handle acceleration
         if (upPressed) {
-            speedY = -playerSpeed;
+            speedY -= acceleration;
+        } else if (downPressed) {
+            speedY += acceleration;
+        } else {
+            // Decelerate when no key is pressed
+            if (speedY > 0) speedY -= deceleration;
+            if (speedY < 0) speedY += deceleration;
         }
-        if (downPressed) {
-            speedY = playerSpeed;
-        }
+    
         if (leftPressed) {
-            speedX = -playerSpeed;
+            speedX -= acceleration;
+        } else if (rightPressed) {
+            speedX += acceleration;
+        } else {
+            // Decelerate when no key is pressed
+            if (speedX > 0) speedX -= deceleration;
+            if (speedX < 0) speedX += deceleration;
         }
-        if (rightPressed) {
-            speedX = playerSpeed;
-        }
-
+    
+        // Cap the speed at the maximum value
+        if (speedX > maxSpeed) speedX = maxSpeed;
+        if (speedX < -maxSpeed) speedX = -maxSpeed;
+        if (speedY > maxSpeed) speedY = maxSpeed;
+        if (speedY < -maxSpeed) speedY = -maxSpeed;
+    
         nextX += speedX;
         nextY += speedY;
-
+    
+        // Check if the player can move to the next position
         if (player.canMove(nextX, nextY, collisionMask)) {
             player.setSpeed(speedX, speedY);
         } else {
-            player.setSpeed(0, 0);
+            player.setSpeed(0.0, 0.0);
         }
     }
 

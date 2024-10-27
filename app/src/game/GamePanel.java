@@ -37,6 +37,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private Button closeButton;
     private List<Bubble> bubbles;
     private Font winningFont;
+    public static int mapWidth = 800;
+    public static int mapHeight = 600;
 
     /**
      * Constructs a new GamePanel, initializes game state, components, resources,
