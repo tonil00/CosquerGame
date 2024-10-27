@@ -10,7 +10,7 @@ Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate
 
 ## 🎮 Gameplay Screenshot
 
-![Gameplay](./img/gameplay-screenshot.png)
+![Gameplay](./img/Screenshot%202024-10-27%20233239.png)
 
 ---
 
