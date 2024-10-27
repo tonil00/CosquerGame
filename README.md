@@ -10,7 +10,9 @@ Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate
 
 ## 🎮 Gameplay Screenshot
 
-![Gameplay](./img/Screenshot%202024-10-27%20233239.png)
+<p align="center">
+    <img src="./img/Screenshot%202024-10-27%20233239.png" alt="Gameplay" width="100%">
+</p>
 
 ---
 
@@ -18,7 +20,9 @@ Welcome to **Cosquer Cave Explorer**, a cave exploration game where you navigate
 
 Explore a virtual recreation of the real Cosquer Cave, a prehistoric underwater site near Marseille. Here's a glimpse of what the real cave looks like:
 
-![Cosquer Cave](./img/section-view-of-the-cosquer-cave-.jpg)
+<p align="center">
+    <img src="./img/section-view-of-the-cosquer-cave-.jpg" alt="Cosquer Cave" width="100%">
+</p>
 
 > *Image of the real Cosquer Cave from historical archives, showing its prehistoric paintings and underwater environment.*
 
