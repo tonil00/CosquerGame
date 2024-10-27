@@ -3,6 +3,9 @@ package game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * The PlayerController class handles the player's movement and key events.
+ */
 public class PlayerController implements KeyListener {
     private Player player;
     private CollisionMaskGenerator collisionMask;
@@ -12,12 +15,22 @@ public class PlayerController implements KeyListener {
     private boolean leftPressed;
     private boolean rightPressed;
 
+    /**
+     * Constructs a PlayerController with the specified player, collision mask, and player speed.
+     *
+     * @param player the player to control
+     * @param collisionMask the collision mask generator
+     * @param playerSpeed the speed of the player
+     */
     public PlayerController(Player player, CollisionMaskGenerator collisionMask, int playerSpeed) {
         this.player = player;
         this.collisionMask = collisionMask;
         this.playerSpeed = playerSpeed;
     }
 
+    /**
+     * Updates the player's speed based on the current key presses.
+     */
     public void updatePlayerSpeed() {
         int speedX = 0;
         int speedY = 0;

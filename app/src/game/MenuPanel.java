@@ -7,12 +7,21 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The MenuPanel class represents the menu screen of the game.
+ * It handles the display of the menu and user interactions with it.
+ */
 public class MenuPanel implements MouseListener {
     private GamePanel gamePanel;
     private Image backgroundImage;
     private Button playButton;
     private boolean buttonPositionSet = false;
 
+    /**
+     * Constructs a MenuPanel with the specified GamePanel.
+     *
+     * @param gamePanel the GamePanel associated with this MenuPanel
+     */
     public MenuPanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.backgroundImage = loadImage("/images/menu_background.png");
@@ -28,6 +37,11 @@ public class MenuPanel implements MouseListener {
         }
     }
 
+    /**
+     * Draws the menu panel, including the background and the play button.
+     *
+     * @param g2d the Graphics2D object used for drawing
+     */
     public void draw(Graphics2D g2d) {
         // Draw background
         g2d.drawImage(backgroundImage, 0, 0, gamePanel.getWidth(), gamePanel.getHeight(), null);

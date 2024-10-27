@@ -3,12 +3,18 @@ package game;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
+/**
+ * GamePanel is the main panel for the game, handling rendering, updates, and
+ * user input.
+ * It initializes game components, manages game state, and processes user
+ * interactions.
+ */
 public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private Player player;
@@ -32,6 +38,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private List<Bubble> bubbles;
     private Font winningFont;
 
+    /**
+     * Constructs a new GamePanel, initializes game state, components, resources,
+     * and listeners.
+     */
     public GamePanel() {
         setFocusable(true);
         requestFocusInWindow();
@@ -59,8 +69,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         long hitCooldown = 1000; // Example cooldown in milliseconds
         collisionManager = new CollisionManager(
-            player, enemyManager, heartBar, collisionSound, hitCooldown
-        );
+                player, enemyManager, heartBar, collisionSound, hitCooldown);
     }
 
     private void initializeResources() {
@@ -98,6 +107,13 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
+    /**
+     * Resets the game state to its initial conditions.
+     * This includes resetting the player's position, heart bar, enemies, collision
+     * manager,
+     * painting manager, and clearing bubbles. The game state is set to PLAYING and
+     * the timer is started.
+     */
     public void resetGame() {
         player.setPosition(400, 500);
         heartBar.reset();

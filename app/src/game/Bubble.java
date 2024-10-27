@@ -4,13 +4,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+/**
+ * The Bubble class represents a bubble that can move upwards on the screen.
+ * It has properties such as position, radius, speed, and color.
+ */
 public class Bubble {
-    private int x, y;
+    private int x;
+    private int y;
     private int radius;
     private int speedY;
     private Color color;
     private int screenHeight;
 
+    /**
+     * Constructs a new Bubble object with random position, radius, speed, and color.
+     *
+     * @param screenWidth  the width of the screen
+     * @param screenHeight the height of the screen
+     */
     public Bubble(int screenWidth, int screenHeight) {
         Random rand = new Random();
         this.x = rand.nextInt(screenWidth);
@@ -21,6 +32,10 @@ public class Bubble {
         this.screenHeight = screenHeight;
     }
 
+    /**
+     * Updates the position of the bubble by moving it upwards.
+     * If the bubble moves off the top of the screen, it is reset to the bottom.
+     */
     public void update() {
         y -= speedY;
         if (y + radius * 2 < 0) {
@@ -28,6 +43,11 @@ public class Bubble {
         }
     }
 
+    /**
+     * Draws the bubble on the screen.
+     *
+     * @param g2d the Graphics2D object used for drawing
+     */
     public void draw(Graphics2D g2d) {
         g2d.setColor(color);
         g2d.fillOval(x, y, radius * 2, radius * 2);

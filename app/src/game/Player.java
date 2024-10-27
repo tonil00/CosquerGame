@@ -152,6 +152,12 @@ public class Player {
         return new Rectangle(x, y, width, height);
     }
 
+    /**
+     * Set the position of the player.
+     * 
+     * @param x The new x-coordinate.
+     * @param y The new y-coordinate.
+     */
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;

@@ -5,6 +5,10 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The HeartBar class represents a health bar with hearts.
+ * It manages the display and update of the player's health.
+ */
 public class HeartBar {
     private int maxHearts;
     private int currentHearts;
@@ -27,7 +31,9 @@ public class HeartBar {
         // Load heart images
         try {
             fullHeartImage = ImageIO.read(getClass().getResourceAsStream("/images/full_heart.png"));
-            emptyHeartImage = ImageIO.read(getClass().getResourceAsStream("/images/empty_heart.png"));
+            emptyHeartImage = ImageIO.read(
+                getClass().getResourceAsStream("/images/empty_heart.png")
+            );
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error loading heart images.");

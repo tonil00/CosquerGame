@@ -1,9 +1,18 @@
 package game;
 
-import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
+/**
+ * The AudioPlayer class provides methods to load, play, loop, stop, and close audio clips.
+ */
 public class AudioPlayer {
     private Clip clip;
 

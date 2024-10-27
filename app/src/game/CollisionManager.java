@@ -3,6 +3,9 @@ package game;
 import java.awt.Rectangle;
 import java.util.List;
 
+/**
+ * Manages collision detection between the player and enemies.
+ */
 public class CollisionManager {
     private Player player;
     private EnemyManager enemyManager;
@@ -11,6 +14,15 @@ public class CollisionManager {
     private long lastHitTime;
     private final long hitCooldown;
 
+    /**
+     * Constructs a CollisionManager.
+     *
+     * @param player the player object
+     * @param enemyManager the manager for enemies
+     * @param heartBar the heart bar for player health
+     * @param collisionSound the audio player for collision sounds
+     * @param hitCooldown the cooldown time between hits
+     */
     public CollisionManager(Player player, EnemyManager enemyManager,
             HeartBar heartBar, AudioPlayer collisionSound,
             long hitCooldown) {
@@ -22,9 +34,15 @@ public class CollisionManager {
         this.lastHitTime = 0;
     }
 
+    /**
+     * Checks for collisions between the player and enemies.
+     * If a collision is detected and the player can take damage,
+     * it handles the collision.
+     */
     public void checkCollisions() {
-        if (!canTakeDamage())
+        if (!canTakeDamage()) {
             return;
+        }
 
         Rectangle playerBounds = player.getBounds();
         List<Enemy> enemies = enemyManager.getEnemies();

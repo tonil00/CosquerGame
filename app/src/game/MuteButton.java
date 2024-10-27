@@ -3,10 +3,12 @@ package game;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The MuteButton class represents a button that toggles the mute state of the game.
+ */
 public class MuteButton {
     private boolean muted;
     private Image unmutedImage;

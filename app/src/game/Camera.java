@@ -1,5 +1,9 @@
 package game;
 
+/**
+ * The Camera class is responsible for managing the viewport and following the
+ * player within the game world.
+ */
 public class Camera {
 
     private int x;
@@ -51,7 +55,6 @@ public class Camera {
         x = Math.max(0, Math.min(x, worldWidth - viewportWidth));
         y = Math.max(0, Math.min(y, worldHeight - viewportHeight));
 
-        
     }
 
     // Getters for camera position

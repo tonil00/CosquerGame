@@ -4,11 +4,19 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The CollisionMaskGenerator class generates a collision mask from an image.
+ */
 public class CollisionMaskGenerator {
     private boolean[][] collisionMask;
     private int width;
     private int height;
 
+    /**
+     * Constructs a CollisionMaskGenerator and generates a collision mask from the given image path.
+     *
+     * @param imagePath the path to the image file used to generate the collision mask
+     */
     public CollisionMaskGenerator(String imagePath) {
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream(imagePath));

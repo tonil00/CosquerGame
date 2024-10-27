@@ -6,8 +6,11 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The Enemy class represents an enemy character in the game.
+ * It handles the enemy's position, movement, and rendering.
+ */
 public class Enemy {
-
     private int x;
     private int y;
     private int width;
@@ -43,6 +46,11 @@ public class Enemy {
         }
     }
 
+    /**
+     * Copy constructor to create a new enemy based on an existing one.
+     *
+     * @param enemy The enemy to copy.
+     */
     public Enemy(Enemy enemy) {
         this.x = enemy.x;
         this.y = enemy.y;

@@ -2,13 +2,12 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.MultipleGradientPaint;
-import java.awt.Point;
-import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
+/**
+ * The Renderer class is responsible for rendering the game elements such as the map, player, enemies, and UI.
+ */
 public class Renderer {
     private GamePanel gamePanel;
 
@@ -16,6 +15,11 @@ public class Renderer {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Renders the game elements such as the map, player, enemies, and UI.
+     *
+     * @param g2d the Graphics2D object used for drawing
+     */
     public void render(Graphics2D g2d) {
         // Save the original transform
         AffineTransform originalTransform = g2d.getTransform();
