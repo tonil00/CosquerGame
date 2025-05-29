@@ -36,7 +36,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private MenuPanel menuPanel;
     private Button closeButton;
     private List<Bubble> bubbles;
-    private Font winningFont;
     private Text congratulationsText;
 
     /**
