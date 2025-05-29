@@ -15,9 +15,3 @@ Just download the build and start playing — no setup required! 🥳
 ```bash
 gradle run
 ```
-## Or use the prebuild .jar file
-```bash
-java -jar ./app/build/libs/CosquerGame-1.0.jar
-```
-
-In both cases ensure you are in the project folder.
