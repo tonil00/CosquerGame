@@ -60,6 +60,124 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+def osName = System.getProperty('os.name').toLowerCase()
+def isMac = osName.contains('mac')
+def isWindows = osName.contains('win')
+def isLinux = osName.contains('linux')
+
+def resolvedInstallerType = (findProperty('installerType') ?: '').toString().trim()
+if (!resolvedInstallerType) {
+    if (isMac) {
+        resolvedInstallerType = 'dmg'
+    } else if (isWindows) {
+        resolvedInstallerType = 'exe'
+    } else if (isLinux) {
+        resolvedInstallerType = 'deb'
+    } else {
+        resolvedInstallerType = 'app-image'
+    }
+}
+
+def jpackageExecutable = new File(System.getProperty('java.home'), 'bin/jpackage').absolutePath
+def jpackageInputDir = layout.buildDirectory.dir('jpackage/input')
+def jpackageOutputDir = layout.buildDirectory.dir('jpackage/dist')
+def fishPngIcon = file('src/assets/images/fish.png')
+def fishIcnsIcon = file('src/assets/images/fish.icns')
+def fishIcoIcon = file('src/assets/images/fish.ico')
+
+def resolveIconPath = {
+    if (isMac && fishIcnsIcon.exists()) {
+        return fishIcnsIcon.absolutePath
+    }
+    if (isWindows && fishIcoIcon.exists()) {
+        return fishIcoIcon.absolutePath
+    }
+    if (isLinux && fishPngIcon.exists()) {
+        return fishPngIcon.absolutePath
+    }
+    return null
+}
+
+def buildJpackageArgs = { String packageType ->
+    def args = [
+        jpackageExecutable,
+        '--type', packageType,
+        '--name', 'CosquerGame',
+        '--dest', jpackageOutputDir.get().asFile.absolutePath,
+        '--input', jpackageInputDir.get().asFile.absolutePath,
+        '--main-jar', tasks.named('jar').get().archiveFileName.get(),
+        '--main-class', application.mainClass.get(),
+        '--app-version', '1.0.0',
+        '--vendor', 'CosquerGame',
+        '--description', 'CosquerGame desktop build',
+        '--java-options', '-Xmx512m'
+    ]
+
+    def iconPath = resolveIconPath()
+    if (iconPath) {
+        args.addAll(['--icon', iconPath])
+    }
+
+    return args
+}
+
+tasks.register('prepareJpackageInput', Copy) {
+    dependsOn tasks.named('jar')
+    from(tasks.named('jar'))
+    into(jpackageInputDir)
+}
+
+tasks.register('packageNative', Exec) {
+    dependsOn tasks.named('prepareJpackageInput')
+
+    doFirst {
+        if (!new File(jpackageExecutable).exists()) {
+            throw new GradleException('jpackage not found. Build with JDK 17+ and ensure jpackage is available in JAVA_HOME/bin.')
+        }
+
+        commandLine(buildJpackageArgs(resolvedInstallerType))
+    }
+}
+
+tasks.register('packageMac') {
+    doFirst {
+        if (!isMac) {
+            throw new GradleException('packageMac must be run on macOS.')
+        }
+    }
+    dependsOn tasks.named('packageNative')
+}
+
+tasks.register('packageWindows') {
+    doFirst {
+        if (!isWindows) {
+            throw new GradleException('packageWindows must be run on Windows.')
+        }
+    }
+    dependsOn tasks.named('packageNative')
+}
+
+tasks.register('packageLinux') {
+    doFirst {
+        if (!isLinux) {
+            throw new GradleException('packageLinux must be run on Linux.')
+        }
+    }
+    dependsOn tasks.named('packageNative')
+}
+
+tasks.register('packageAppImage', Exec) {
+    dependsOn tasks.named('prepareJpackageInput')
+
+    doFirst {
+        if (!new File(jpackageExecutable).exists()) {
+            throw new GradleException('jpackage not found. Build with JDK 17+ and ensure jpackage is available in JAVA_HOME/bin.')
+        }
+
+        commandLine(buildJpackageArgs('app-image'))
+    }
+}
+
 // Gradle wrapper task
 task wrapper(type: Wrapper) {
     gradleVersion = '8.1' // Use a specific Gradle version that is compatible

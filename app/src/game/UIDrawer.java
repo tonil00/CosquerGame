@@ -10,7 +10,6 @@ public class UIDrawer {
     private HeartBar heartBar;
     private MuteButton muteButton;
     private PaintingManager paintingManager;
-    private Font uiFont = new Font("Arial", Font.BOLD, 20);
     private Text text = new Text();
 
     /**
